@@ -1,0 +1,404 @@
+Database Systems Lab
+Lab - 8
+Use of Where Clause and Order By Clause in MySQL along with SQL Functions
+
+
+1) Use company database for this experiment
+2) Run following queries and learn by observation 
+
+#Displaying all records from a table (* displays all columns)
+mysql> select * From employee;
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| John     | B     | Smith   | 123456789 | 1965-01-09 | 731 Fondren, Houston TX | M    |  40000 | 333445555 |   5 |
+| Franklin | T     | Wong    | 333445555 | 1965-12-08 | 638 Voss, Houston TX    | M    |  40000 | 888665555 |   5 |
+| Joyce    | A     | English | 453453453 | 1972-07-31 | 5631 Rice, Houston TX   | F    |  25000 | 333445555 |   5 |
+| Ramesh   | K     | Narayan | 666884444 | 1962-09-15 | 975 Fire Oak, Humble TX | M    |  38000 | 333445555 |   5 |
+| James    | E     | Borg    | 888665555 | 1937-11-10 | 450 Stone, Houston TX   | M    |  55000 | NULL      |   1 |
+| Jennifer | S     | Wallace | 987654321 | 1941-06-20 | 291 Berry, Bellaire TX  | F    |  43000 | 888665555 |   4 |
+| Ahmad    | V     | Jabbar  | 987987987 | 1969-03-29 | 980 Dallas, Houston TX  | M    |  25000 | 987654321 |   4 |
+| Alicia   | J     | Zelaya  | 999887777 | 1968-01-19 | 3321 Castle, Spring TX  | F    |  25000 | 987654321 |   4 |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+8 rows in set (0.00 sec)
+
+#Filtering record using where clause (operator supported >, <, >=, <=, <> (not equal), =, IN, BETWEEN, and LIKE) 
+mysql> select * from employee where salary > 30000;
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| John     | B     | Smith   | 123456789 | 1965-01-09 | 731 Fondren, Houston TX | M    |  40000 | 333445555 |   5 |
+| Franklin | T     | Wong    | 333445555 | 1965-12-08 | 638 Voss, Houston TX    | M    |  40000 | 888665555 |   5 |
+| Ramesh   | K     | Narayan | 666884444 | 1962-09-15 | 975 Fire Oak, Humble TX | M    |  38000 | 333445555 |   5 |
+| James    | E     | Borg    | 888665555 | 1937-11-10 | 450 Stone, Houston TX   | M    |  55000 | NULL      |   1 |
+| Jennifer | S     | Wallace | 987654321 | 1941-06-20 | 291 Berry, Bellaire TX  | F    |  43000 | 888665555 |   4 |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+5 rows in set (0.00 sec)
+
+#String filter
+mysql> select * From employee where sex='f';
++----------+-------+---------+-----------+------------+------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+------------------------+------+--------+-----------+-----+
+| Joyce    | A     | English | 453453453 | 1972-07-31 | 5631 Rice, Houston TX  | F    |  25000 | 333445555 |   5 |
+| Jennifer | S     | Wallace | 987654321 | 1941-06-20 | 291 Berry, Bellaire TX | F    |  43000 | 888665555 |   4 |
+| Alicia   | J     | Zelaya  | 999887777 | 1968-01-19 | 3321 Castle, Spring TX | F    |  25000 | 987654321 |   4 |
++----------+-------+---------+-----------+------------+------------------------+------+--------+-----------+-----+
+3 rows in set (0.00 sec)
+
+#Filter on two columns using AND
+mysql> select * From employee where dno=5 and sex='m';
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| John     | B     | Smith   | 123456789 | 1965-01-09 | 731 Fondren, Houston TX | M    |  40000 | 333445555 |   5 |
+| Franklin | T     | Wong    | 333445555 | 1965-12-08 | 638 Voss, Houston TX    | M    |  40000 | 888665555 |   5 |
+| Ramesh   | K     | Narayan | 666884444 | 1962-09-15 | 975 Fire Oak, Humble TX | M    |  38000 | 333445555 |   5 |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+3 rows in set (0.00 sec)
+
+#Filter using IN Operator
+mysql> select * from employee where dno in (1,2,3,4);
++----------+-------+---------+-----------+------------+------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+------------------------+------+--------+-----------+-----+
+| James    | E     | Borg    | 888665555 | 1937-11-10 | 450 Stone, Houston TX  | M    |  55000 | NULL      |   1 |
+| Jennifer | S     | Wallace | 987654321 | 1941-06-20 | 291 Berry, Bellaire TX | F    |  43000 | 888665555 |   4 |
+| Ahmad    | V     | Jabbar  | 987987987 | 1969-03-29 | 980 Dallas, Houston TX | M    |  25000 | 987654321 |   4 |
+| Alicia   | J     | Zelaya  | 999887777 | 1968-01-19 | 3321 Castle, Spring TX | F    |  25000 | 987654321 |   4 |
++----------+-------+---------+-----------+------------+------------------------+------+--------+-----------+-----+
+4 rows in set (0.00 sec)
+
+#Same effect as above IN query
+mysql> select * from employee where dno=1 or dno=2 or dno= 3 or dno=4;
++----------+-------+---------+-----------+------------+------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+------------------------+------+--------+-----------+-----+
+| James    | E     | Borg    | 888665555 | 1937-11-10 | 450 Stone, Houston TX  | M    |  55000 | NULL      |   1 |
+| Jennifer | S     | Wallace | 987654321 | 1941-06-20 | 291 Berry, Bellaire TX | F    |  43000 | 888665555 |   4 |
+| Ahmad    | V     | Jabbar  | 987987987 | 1969-03-29 | 980 Dallas, Houston TX | M    |  25000 | 987654321 |   4 |
+| Alicia   | J     | Zelaya  | 999887777 | 1968-01-19 | 3321 Castle, Spring TX | F    |  25000 | 987654321 |   4 |
++----------+-------+---------+-----------+------------+------------------------+------+--------+-----------+-----+
+4 rows in set (0.00 sec)
+
+#Use of BETWEEN operator
+mysql> select * from employee where salary between 38000 and 40000;
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| John     | B     | Smith   | 123456789 | 1965-01-09 | 731 Fondren, Houston TX | M    |  40000 | 333445555 |   5 |
+| Franklin | T     | Wong    | 333445555 | 1965-12-08 | 638 Voss, Houston TX    | M    |  40000 | 888665555 |   5 |
+| Ramesh   | K     | Narayan | 666884444 | 1962-09-15 | 975 Fire Oak, Humble TX | M    |  38000 | 333445555 |   5 |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+3 rows in set (0.00 sec)
+
+
+#Same effect as above BETWEEN query
+mysql> select * from employee where salary >= 38000 and salary<=40000;
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| John     | B     | Smith   | 123456789 | 1965-01-09 | 731 Fondren, Houston TX | M    |  40000 | 333445555 |   5 |
+| Franklin | T     | Wong    | 333445555 | 1965-12-08 | 638 Voss, Houston TX    | M    |  40000 | 888665555 |   5 |
+| Ramesh   | K     | Narayan | 666884444 | 1962-09-15 | 975 Fire Oak, Humble TX | M    |  38000 | 333445555 |   5 |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+3 rows in set (0.00 sec)
+
+
+#Display detail of all employees whose supervisor is 333445555
+
+mysql> select * From employee where super_ssn=333445555;
++--------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname  | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++--------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| John   | B     | Smith   | 123456789 | 1965-01-09 | 731 Fondren, Houston TX | M    |  40000 | 333445555 |   5 |
+| Joyce  | A     | English | 453453453 | 1972-07-31 | 5631 Rice, Houston TX   | F    |  25000 | 333445555 |   5 |
+| Ramesh | K     | Narayan | 666884444 | 1962-09-15 | 975 Fire Oak, Humble TX | M    |  38000 | 333445555 |   5 |
++--------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+3 rows in set (0.00 sec)
+
+#Displaying selective columns with selective rows(records)
+mysql> select fname,ssn from employee where dno=4;
++----------+-----------+
+| fname    | ssn       |
++----------+-----------+
+| Jennifer | 987654321 |
+| Ahmad    | 987987987 |
+| Alicia   | 999887777 |
++----------+-----------+
+3 rows in set (0.00 sec)
+
+#Use of LIKE operator - Sub string(pattern) matching
+#Displaying all the records where Fname starts with 'J'
+mysql> select * From employee where fname like 'J%';
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| John     | B     | Smith   | 123456789 | 1965-01-09 | 731 Fondren, Houston TX | M    |  40000 | 333445555 |   5 |
+| Joyce    | A     | English | 453453453 | 1972-07-31 | 5631 Rice, Houston TX   | F    |  25000 | 333445555 |   5 |
+| James    | E     | Borg    | 888665555 | 1937-11-10 | 450 Stone, Houston TX   | M    |  55000 | NULL      |   1 |
+| Jennifer | S     | Wallace | 987654321 | 1941-06-20 | 291 Berry, Bellaire TX  | F    |  43000 | 888665555 |   4 |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+4 rows in set (0.00 sec)
+
+#Displaying all the records where Fname starts with 'Ja'
+mysql> select * From employee where fname like 'Ja%';
++-------+-------+-------+-----------+------------+-----------------------+------+--------+-----------+-----+
+| Fname | Minit | lname | Ssn       | Bdate      | Address               | Sex  | Salary | Super_ssn | Dno |
++-------+-------+-------+-----------+------------+-----------------------+------+--------+-----------+-----+
+| James | E     | Borg  | 888665555 | 1937-11-10 | 450 Stone, Houston TX | M    |  55000 | NULL      |   1 |
++-------+-------+-------+-----------+------------+-----------------------+------+--------+-----------+-----+
+1 row in set (0.00 sec)
+
+#Displaying all the records where Fname has 'n' at any position
+mysql> select * From employee where fname like '%n%';
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| John     | B     | Smith   | 123456789 | 1965-01-09 | 731 Fondren, Houston TX | M    |  40000 | 333445555 |   5 |
+| Franklin | T     | Wong    | 333445555 | 1965-12-08 | 638 Voss, Houston TX    | M    |  40000 | 888665555 |   5 |
+| Jennifer | S     | Wallace | 987654321 | 1941-06-20 | 291 Berry, Bellaire TX  | F    |  43000 | 888665555 |   4 |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+3 rows in set (0.00 sec)
+
+#Displaying all the records where Fname has 'an' at any position
+mysql> select * From employee where fname like '%an%';
++----------+-------+-------+-----------+------------+----------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname | Ssn       | Bdate      | Address              | Sex  | Salary | Super_ssn | Dno |
++----------+-------+-------+-----------+------------+----------------------+------+--------+-----------+-----+
+| Franklin | T     | Wong  | 333445555 | 1965-12-08 | 638 Voss, Houston TX | M    |  40000 | 888665555 |   5 |
++----------+-------+-------+-----------+------------+----------------------+------+--------+-----------+-----+
+1 row in set (0.00 sec)
+
+#Displaying all the records where Fname ends with 'n'
+mysql> select * From employee where fname like '%n';
++----------+-------+-------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++----------+-------+-------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| John     | B     | Smith | 123456789 | 1965-01-09 | 731 Fondren, Houston TX | M    |  40000 | 333445555 |   5 |
+| Franklin | T     | Wong  | 333445555 | 1965-12-08 | 638 Voss, Houston TX    | M    |  40000 | 888665555 |   5 |
++----------+-------+-------+-----------+------------+-------------------------+------+--------+-----------+-----+
+2 rows in set (0.00 sec)
+
+#Displaying all the records where Fname has a and e at 2nd and 4th position
+mysql> select * From employee where fname like '_a_e%';
++--------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname  | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++--------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Ramesh | K     | Narayan | 666884444 | 1962-09-15 | 975 Fire Oak, Humble TX | M    |  38000 | 333445555 |   5 |
+| James  | E     | Borg    | 888665555 | 1937-11-10 | 450 Stone, Houston TX   | M    |  55000 | NULL      |   1 |
++--------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+2 rows in set (0.00 sec)
+
+#Displaying all the records where Fname has a at second position and e after it at any position
+mysql> select * From employee where fname like '_a%e%';
++--------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname  | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++--------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Ramesh | K     | Narayan | 666884444 | 1962-09-15 | 975 Fire Oak, Humble TX | M    |  38000 | 333445555 |   5 |
+| James  | E     | Borg    | 888665555 | 1937-11-10 | 450 Stone, Houston TX   | M    |  55000 | NULL      |   1 |
++--------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+2 rows in set (0.00 sec)
+
+#Ordering reconds on some column (Default order is ascending)
+mysql> select * From employee order by dno;
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| James    | E     | Borg    | 888665555 | 1937-11-10 | 450 Stone, Houston TX   | M    |  55000 | NULL      |   1 |
+| Jennifer | S     | Wallace | 987654321 | 1941-06-20 | 291 Berry, Bellaire TX  | F    |  43000 | 888665555 |   4 |
+| Ahmad    | V     | Jabbar  | 987987987 | 1969-03-29 | 980 Dallas, Houston TX  | M    |  25000 | 987654321 |   4 |
+| Alicia   | J     | Zelaya  | 999887777 | 1968-01-19 | 3321 Castle, Spring TX  | F    |  25000 | 987654321 |   4 |
+| John     | B     | Smith   | 123456789 | 1965-01-09 | 731 Fondren, Houston TX | M    |  40000 | 333445555 |   5 |
+| Franklin | T     | Wong    | 333445555 | 1965-12-08 | 638 Voss, Houston TX    | M    |  40000 | 888665555 |   5 |
+| Joyce    | A     | English | 453453453 | 1972-07-31 | 5631 Rice, Houston TX   | F    |  25000 | 333445555 |   5 |
+| Ramesh   | K     | Narayan | 666884444 | 1962-09-15 | 975 Fire Oak, Humble TX | M    |  38000 | 333445555 |   5 |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+8 rows in set (0.00 sec)
+
+#Descending order arrangement on some column
+mysql> select * From employee order by dno desc;
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| John     | B     | Smith   | 123456789 | 1965-01-09 | 731 Fondren, Houston TX | M    |  40000 | 333445555 |   5 |
+| Franklin | T     | Wong    | 333445555 | 1965-12-08 | 638 Voss, Houston TX    | M    |  40000 | 888665555 |   5 |
+| Joyce    | A     | English | 453453453 | 1972-07-31 | 5631 Rice, Houston TX   | F    |  25000 | 333445555 |   5 |
+| Ramesh   | K     | Narayan | 666884444 | 1962-09-15 | 975 Fire Oak, Humble TX | M    |  38000 | 333445555 |   5 |
+| Jennifer | S     | Wallace | 987654321 | 1941-06-20 | 291 Berry, Bellaire TX  | F    |  43000 | 888665555 |   4 |
+| Ahmad    | V     | Jabbar  | 987987987 | 1969-03-29 | 980 Dallas, Houston TX  | M    |  25000 | 987654321 |   4 |
+| Alicia   | J     | Zelaya  | 999887777 | 1968-01-19 | 3321 Castle, Spring TX  | F    |  25000 | 987654321 |   4 |
+| James    | E     | Borg    | 888665555 | 1937-11-10 | 450 Stone, Houston TX   | M    |  55000 | NULL      |   1 |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+8 rows in set (0.00 sec)
+
+#Primary and secondary columns
+mysql> select * From employee order by dno,salary;
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| James    | E     | Borg    | 888665555 | 1937-11-10 | 450 Stone, Houston TX   | M    |  55000 | NULL      |   1 |
+| Ahmad    | V     | Jabbar  | 987987987 | 1969-03-29 | 980 Dallas, Houston TX  | M    |  25000 | 987654321 |   4 |
+| Alicia   | J     | Zelaya  | 999887777 | 1968-01-19 | 3321 Castle, Spring TX  | F    |  25000 | 987654321 |   4 |
+| Jennifer | S     | Wallace | 987654321 | 1941-06-20 | 291 Berry, Bellaire TX  | F    |  43000 | 888665555 |   4 |
+| Joyce    | A     | English | 453453453 | 1972-07-31 | 5631 Rice, Houston TX   | F    |  25000 | 333445555 |   5 |
+| Ramesh   | K     | Narayan | 666884444 | 1962-09-15 | 975 Fire Oak, Humble TX | M    |  38000 | 333445555 |   5 |
+| John     | B     | Smith   | 123456789 | 1965-01-09 | 731 Fondren, Houston TX | M    |  40000 | 333445555 |   5 |
+| Franklin | T     | Wong    | 333445555 | 1965-12-08 | 638 Voss, Houston TX    | M    |  40000 | 888665555 |   5 |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+8 rows in set (0.00 sec)
+
+#Asceding on primary column and Descending on secondary column 
+mysql> select * From employee order by dno asc,salary desc;
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| Fname    | Minit | lname   | Ssn       | Bdate      | Address                 | Sex  | Salary | Super_ssn | Dno |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+| James    | E     | Borg    | 888665555 | 1937-11-10 | 450 Stone, Houston TX   | M    |  55000 | NULL      |   1 |
+| Jennifer | S     | Wallace | 987654321 | 1941-06-20 | 291 Berry, Bellaire TX  | F    |  43000 | 888665555 |   4 |
+| Ahmad    | V     | Jabbar  | 987987987 | 1969-03-29 | 980 Dallas, Houston TX  | M    |  25000 | 987654321 |   4 |
+| Alicia   | J     | Zelaya  | 999887777 | 1968-01-19 | 3321 Castle, Spring TX  | F    |  25000 | 987654321 |   4 |
+| John     | B     | Smith   | 123456789 | 1965-01-09 | 731 Fondren, Houston TX | M    |  40000 | 333445555 |   5 |
+| Franklin | T     | Wong    | 333445555 | 1965-12-08 | 638 Voss, Houston TX    | M    |  40000 | 888665555 |   5 |
+| Ramesh   | K     | Narayan | 666884444 | 1962-09-15 | 975 Fire Oak, Humble TX | M    |  38000 | 333445555 |   5 |
+| Joyce    | A     | English | 453453453 | 1972-07-31 | 5631 Rice, Houston TX   | F    |  25000 | 333445555 |   5 |
++----------+-------+---------+-----------+------------+-------------------------+------+--------+-----------+-----+
+8 rows in set (0.00 sec)
+
+mysql> select fname,Ssn,dno,salary From employee order by dno asc,salary desc;
++----------+-----------+-----+--------+
+| fname    | Ssn       | dno | salary |
++----------+-----------+-----+--------+
+| James    | 888665555 |   1 |  55000 |
+| Jennifer | 987654321 |   4 |  43000 |
+| Ahmad    | 987987987 |   4 |  25000 |
+| Alicia   | 999887777 |   4 |  25000 |
+| John     | 123456789 |   5 |  40000 |
+| Franklin | 333445555 |   5 |  40000 |
+| Ramesh   | 666884444 |   5 |  38000 |
+| Joyce    | 453453453 |   5 |  25000 |
++----------+-----------+-----+--------+
+8 rows in set (0.00 sec)
+
+#Selecting distinct values from a column 
+mysql> select distinct dno from employee;
++-----+
+| dno |
++-----+
+|   1 |
+|   4 |
+|   5 |
++-----+
+3 rows in set (0.00 sec)
+
+
+#MySQL Functions
+
+mysql> select count(*) from employee;
++----------+
+| count(*) |
++----------+
+|        8 |
++----------+
+1 row in set (0.01 sec)
+
+
+
+mysql> select max(salary) from employee;
++-------------+
+| max(salary) |
++-------------+
+|       55000 |
++-------------+
+1 row in set (0.01 sec)
+
+
+mysql> select max(salary),min(salary),avg(salary),sum(salary) from employee;
++-------------+-------------+-------------+-------------+
+| max(salary) | min(salary) | avg(salary) | sum(salary) |
++-------------+-------------+-------------+-------------+
+|       55000 |       25000 |  36375.0000 |      291000 |
++-------------+-------------+-------------+-------------+
+1 row in set (0.00 sec)
+
+mysql> select max(salary) MaxSal,min(salary) MinSalary,avg(salary) AvgSalary,sum(salary) SumSalary from employee;
++--------+-----------+------------+-----------+
+| MaxSal | MinSalary | AvgSalary  | SumSalary |
++--------+-----------+------------+-----------+
+|  55000 |     25000 | 36375.0000 |    291000 |
++--------+-----------+------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> help functions;
+You asked for help about help category: "Functions"
+For more information, type 'help <item>', where <item> is one of the following
+categories:
+   Bit Functions
+   Comparison Operators
+   Control Flow Functions
+   Date and Time Functions
+   Encryption Functions
+   GROUP BY Functions and Modifiers
+   Information Functions
+   Locking Functions
+   Logical Operators
+   Miscellaneous Functions
+   Numeric Functions
+   Performance Schema Functions
+   Spatial Functions
+   String Functions
+
+
+mysql> help date and time functions;
+
+mysql> select week(bdate) from employee;
++-------------+
+| week(bdate) |
++-------------+
+|           1 |
+|          49 |
+|          31 |
+|          36 |
+|          45 |
+|          24 |
+|          12 |
+|           2 |
++-------------+
+8 rows in set (0.00 sec)
+
+mysql> select year(bdate) from employee;
++-------------+
+| year(bdate) |
++-------------+
+|        1965 |
+|        1965 |
+|        1972 |
+|        1962 |
+|        1937 |
+|        1941 |
+|        1969 |
+|        1968 |
++-------------+
+8 rows in set (0.00 sec)
+
+mysql> select now();
++---------------------+
+| now()               |
++---------------------+
+| 2023-09-17 12:15:33 |
++---------------------+
+1 row in set (0.00 sec)
+
+
+mysql> SELECT TIMEDIFF('2008-12-31 23:59:59.000001','2008-12-30 01:01:01.000002');
++---------------------------------------------------------------------+
+| TIMEDIFF('2008-12-31 23:59:59.000001','2008-12-30 01:01:01.000002') |
++---------------------------------------------------------------------+
+| 46:58:57.999999                                                     |
++---------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+
+
+
+
+

@@ -1,0 +1,184 @@
+Enter password: *****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 36
+Server version: 8.0.30 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database company_youreno;
+Query OK, 1 row affected (0.06 sec)
+
+mysql>
+mysql> use database company_youreno;
+ERROR 1049 (42000): Unknown database 'database'
+mysql> use  company_youreno;
+Database changed
+mysql>
+mysql> create table employee( fname varchar(20), minit char(1), lname varchar(20), bdate date , address varchar(100), sex char(1) , salary int(6), super_ssn int(9), dno int(2));
+Query OK, 0 rows affected, 3 warnings (0.24 sec)
+
+mysql> insert into employee values
+    -> ("jhon" , "b" "smith", 123456789,"1965-01-09","731 fondren,Houston, TX","M",30000,333445555,5)
+    -> ("franklin","t" ,"wong", 333445555,"1955-12-08","638 voss, houston, TX","M",40000,888665555,5)
+    -> ("alicia", "j", "Zelaya",999887777,"1968-01-19","3321 castle, spring, TX","F",25000,987654321,4)
+    -> ("jennifer", "s", "wallace",987654321,"1941-06-20","291 berry , bellaire, TX","F",43000,888665555,4)
+    -> ("ramesh", "k", "narayan",666884444,"1962-09-15","975 fire oka , humble, TX","M",38000,333445555,5)
+    -> ("joyce", "a" , "english",453453453,"1972-07-31","5631 rice , houston TX ","F",25000,333445555,5)
+    -> ("ahmad","v" , "jabbar", 987987987,"1969-03-29","980 dallas , houston, TX","M",25000,987654321,4)
+    -> ("james", "e","borg",888665555,"1937-11-10","450 stone, houston, TX","M",55000,null ,1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '("franklin","t" ,"wong", 333445555,"1955-12-08","638 voss, houston, TX","M",4000' at line 3
+mysql> insert into employee values
+    -> ("jhon" , "b" "smith", 123456789,"1965-01-09","731 fondren,Houston, TX","M",30000,333445555,5)
+    -> ("franklin","t" ,"wong", 333445555,"1955-12-08","638 voss, houston, TX","M",40000,888665555,5)
+    -> ("alicia", "j", "Zelaya",999887777,"1968-01-19","3321 castle, spring, TX","F",25000,987654321,4)
+    -> ("jennifer", "s", "wallace",987654321,"1941-06-20","291 berry , bellaire, TX","F",43000,888665555,4)
+    -> ("ramesh", "k", "narayan",666884444,"1962-09-15","975 fire oka , humble, TX","M",38000,333445555,5)
+    -> ("joyce", "a" , "english",453453453,"1972-07-31","5631 rice , houston TX ","F",25000,333445555,5)
+    -> ("ahmad","v" , "jabbar", 987987987,"1969-03-29","980 dallas , houston, TX","M",25000,987654321,4)
+    -> ("joyce", "a" , "english",453453453,"1972-07-31","5631 rice , houston TX ","F",25000,333445555,5)
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '("franklin","t" ,"wong", 333445555,"1955-12-08","638 voss, houston, TX","M",4000' at line 3
+mysql> insert into employee values
+    -> ("jhon" , "b" "smith", 123456789,"1965-01-09","731 fondren,Houston, TX","M",30000,333445555,5)
+    -> ("franklin","t" ,"wong", 333445555,"1955-12-08","638 voss, houston, TX","M",40000,888665555,5)
+    -> ("alicia", "j", "Zelaya",999887777,"1968-01-19","3321 castle, spring, TX","F",25000,987654321,4)
+    -> ("jennifer", "s", "wallace",987654321,"1941-06-20","291 berry , bellaire, TX","F",43000,888665555,4)
+    -> ("ramesh", "k", "narayan",666884444,"1962-09-15","975 fire oka , humble, TX","M",38000,333445555,5)
+    -> ("joyce", "a" , "english",453453453,"1972-07-31","5631 rice , houston TX ","F",25000,333445555,5)
+    -> ("ahmad","v" , "jabbar", 987987987,"1969-03-29","980 dallas , houston, TX","M",25000,987654321,4)
+    -> ("james", "e","borg",888665555,"1937-11-10","450 stone, houston, TX","M",55000,null ,1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '("franklin","t" ,"wong", 333445555,"1955-12-08","638 voss, houston, TX","M",4000' at line 3
+mysql> insert into employee values
+    -> ("jhon" , "b" "smith", 123456789,"1965-01-09","731 fondren,Houston, TX","M",30000,333445555,5)
+    -> ("franklin","t" ,"wong", 333445555,"1955-12-08","638 voss, houston, TX","M",40000,888665555,5)
+    -> ("alicia", "j", "Zelaya",999887777,"1968-01-19","3321 castle, spring, TX","F",25000,987654321,4)
+    -> ("jennifer", "s", "wallace",987654321,"1941-06-20","291 berry , bellaire, TX","F",43000,888665555,4)
+    -> ("ramesh", "k", "narayan",666884444,"1962-09-15","975 fire oka , humble, TX","M",38000,333445555,5)
+    -> ("joyce", "a" , "english",453453453,"1972-07-31","5631 rice , houston TX ","F",25000,333445555,5)
+    -> ("ahmad","v" , "jabbar", 987987987,"1969-03-29","980 dallas , houston, TX","M",25000,987654321,4)
+    -> ("james", "e","borg",888665555,"1937-11-10","450 stone, houston, TX","M",55000,null ,1);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '("franklin","t" ,"wong", 333445555,"1955-12-08","638 voss, houston, TX","M",4000' at line 3
+mysql> insert into employee values
+    -> ("jhon" , "b" "smith", 123456789,"1965-01-09","731 fondren,Houston, TX","M",30000,333445555,5);
+ERROR 1406 (22001): Data too long for column 'minit' at row 1
+mysql> insert into employee values
+    -> ("jhon" ,"b" ,"smith", 123456789,"1965-01-09","731 fondren,Houston, TX","M",30000,333445555,5);
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> delete table employee;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table employee' at line 1
+mysql> delete  employee;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> delete employee;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> drop employee;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'employee' at line 1
+mysql> show tables;
++---------------------------+
+| Tables_in_company_youreno |
++---------------------------+
+| employee                  |
++---------------------------+
+1 row in set (0.00 sec)
+
+mysql> drop employee;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'employee' at line 1
+mysql> drop table employee;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> create table employee( fname varchar(20), minit char(1), lname varchar(20),san int(9), bdate date , address varchar(100), sex char(1) , salary int(6), super_ssn int(9), dno int(2));
+Query OK, 0 rows affected, 4 warnings (0.10 sec)
+
+mysql> insert into employee values
+    -> ("jhon" ,"b" ,"smith", 123456789,"1965-01-09","731 fondren,Houston, TX","M",30000,333445555,5)
+    -> ("franklin","t" ,"wong", 333445555,"1955-12-08","638 voss, houston, TX","M",40000,888665555,5)
+    -> ("alicia", "j", "Zelaya",999887777,"1968-01-19","3321 castle, spring, TX","F",25000,987654321,4)
+    -> ("jennifer", "s", "wallace",987654321,"1941-06-20","291 berry , bellaire, TX","F",43000,888665555,4)
+    -> ("ramesh", "k", "narayan",666884444,"1962-09-15","975 fire oka , humble, TX","M",38000,333445555,5)
+    -> ("joyce", "a" , "english",453453453,"1972-07-31","5631 rice , houston TX ","F",25000,333445555,5)
+    -> ("ahmad","v" , "jabbar", 987987987,"1969-03-29","980 dallas , houston, TX","M",25000,987654321,4)
+    -> ("james", "e","borg",888665555,"1937-11-10","450 stone, houston, TX","M",55000,null ,1)
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '("franklin","t" ,"wong", 333445555,"1955-12-08","638 voss, houston, TX","M",4000' at line 3
+mysql> insert into employee values
+    -> ("jhon" ,"b" ,"smith", 123456789,"1965-01-09","731 fondren,Houston, TX","M",30000,333445555,5);
+Query OK, 1 row affected (0.08 sec)
+
+mysql> insert into employee values;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> insert into employee values
+    -> ("franklin","t" ,"wong",333445555,"1955-12-08","638 voss, houston, TX","M",40000,888665555,5);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> ("franklin","t" ,"wong",333445555,"1955-12-08","638 voss, houston, TX","M",40000,888665555,5);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '"franklin","t" ,"wong",333445555,"1955-12-08","638 voss, houston, TX","M",40000,' at line 1
+mysql> insert into employee values
+    -> ("alicia", "j", "Zelaya",999887777,"1968-01-19","3321 castle, spring, TX","F",25000,987654321,4);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into employee values
+    -> ("jennifer", "s", "wallace",987654321,"1941-06-20","291 berry , bellaire, TX","F",43000,888665555,4);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into employee values
+    -> ("ramesh", "k", "narayan",666884444,"1962-09-15","975 fire oka , humble, TX","M",38000,333445555,5);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into employee values
+    -> ("joyce", "a" , "english",453453453,"1972-07-31","5631 rice , houston TX ","F",25000,333445555,5);
+Query OK, 1 row affected (0.05 sec)
+
+mysql> insert into employee values
+    -> ("ahmad","v" , "jabbar", 987987987,"1969-03-29","980 dallas , houston, TX","M",25000,987654321,4);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> insert into employee values
+    -> ("james", "e","borg",888665555,"1937-11-10","450 stone, houston, TX","M",55000,null ,1)
+    -> ;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from employee;
++----------+-------+---------+-----------+------------+---------------------------+------+--------+-----------+------+
+| fname    | minit | lname   | san       | bdate      | address                   | sex  | salary | super_ssn | dno  |
++----------+-------+---------+-----------+------------+---------------------------+------+--------+-----------+------+
+| jhon     | b     | smith   | 123456789 | 1965-01-09 | 731 fondren,Houston, TX   | M    |  30000 | 333445555 |    5 |
+| franklin | t     | wong    | 333445555 | 1955-12-08 | 638 voss, houston, TX     | M    |  40000 | 888665555 |    5 |
+| alicia   | j     | Zelaya  | 999887777 | 1968-01-19 | 3321 castle, spring, TX   | F    |  25000 | 987654321 |    4 |
+| jennifer | s     | wallace | 987654321 | 1941-06-20 | 291 berry , bellaire, TX  | F    |  43000 | 888665555 |    4 |
+| ramesh   | k     | narayan | 666884444 | 1962-09-15 | 975 fire oka , humble, TX | M    |  38000 | 333445555 |    5 |
+| joyce    | a     | english | 453453453 | 1972-07-31 | 5631 rice , houston TX    | F    |  25000 | 333445555 |    5 |
+| ahmad    | v     | jabbar  | 987987987 | 1969-03-29 | 980 dallas , houston, TX  | M    |  25000 | 987654321 |    4 |
+| james    | e     | borg    | 888665555 | 1937-11-10 | 450 stone, houston, TX    | M    |  55000 |      NULL |    1 |
++----------+-------+---------+-----------+------------+---------------------------+------+--------+-----------+------+
+8 rows in set (0.00 sec)
+
+mysql>
+mysql> create table department( dname varchar(20), dnumber int(2), mgr_ssn int(9),mgr_start_date date);
+Query OK, 0 rows affected, 2 warnings (0.11 sec)
+
+mysql> desc department;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| dname          | varchar(20) | YES  |     | NULL    |       |
+| dnumber        | int         | YES  |     | NULL    |       |
+| mgr_ssn        | int         | YES  |     | NULL    |       |
+| mgr_start_date | date        | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.03 sec)
+
+mysql> insert into employee values ("research", 5, 333445555 ,"1998-05-22"),
+    -> ("administration", 4, 987654321,"1995-01-01"),
+    -> ("headquaters",1, 888665555,"1981-06-19");
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into employee values ("research", 5, 333445555 ,"1998-05-22");
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into employee values ("research", 5, 333445555 ,"1998-05-22");

@@ -1,0 +1,96 @@
+1##########################
+
+
+mysql> select dno , max(salary) as maxsalary from employee group by dno ;
++------+-----------+
+| dno  | maxsalary |
++------+-----------+
+|    5 |     40000 |
+|    4 |     43000 |
+|    1 |     55000 |
++------+-----------+
+3 rows in set (0.02 sec)
+
+
+2#########################
+
+
+mysql> select dno , max(salary) as maxsalary from employee group by dno order by dno desc;
++------+-----------+
+| dno  | maxsalary |
++------+-----------+
+|    5 |     40000 |
+|    4 |     43000 |
+|    1 |     55000 |
++------+-----------+
+3 rows in set (0.00 sec)
+
+
+3#########################
+
+
+mysql> select dno , count(dno) as noemp from employee group by dno order by dno;
++------+-------+
+| dno  | noemp |
++------+-------+
+|    1 |     1 |
+|    4 |     3 |
+|    5 |     4 |
++------+-------+
+3 rows in set (0.00 sec)
+
+
+4########################
+
+
+mysql> select dno , count(dno) as noemp from employee group by dno  having dno>3 order by dno ;
++------+-------+
+| dno  | noemp |
++------+-------+
+|    4 |     3 |
+|    5 |     4 |
++------+-------+
+2 rows in set (0.00 sec)
+
+
+5#######################
+
+
+mysql> select pno , sum(hours) from works_on group by pno;
++------+------------+
+| pno  | sum(hours) |
++------+------------+
+| 1    |       52.0 |
+| 2    |       37.0 |
+| 3    |       50.0 |
+| 10   |       55.0 |
+| 20   |       25.0 |
+| 30   |       35.0 |
++------+------------+
+6 rows in set (0.00 sec)
+
+
+6######################
+
+
+mysql> select pno,sum(hours) from works_on group by pno order by sum(hours) limit 1;
++------+------------+
+| pno  | sum(hours) |
++------+------------+
+| 20   |       25.0 |
++------+------------+
+1 row in set (0.01 sec)
+
+
+7######################
+
+
+mysql> select dno , sum(salary) from employee where sex = "m" group by dno having sum(salary)>30000;
++------+-------------+
+| dno  | sum(salary) |
++------+-------------+
+|    5 |      108000 |
+|    1 |       55000 |
++------+-------------+
+2 rows in set (0.00 sec)
+

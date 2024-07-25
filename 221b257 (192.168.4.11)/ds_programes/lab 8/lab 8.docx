@@ -1,0 +1,63 @@
+    ques1:
+    
+def insertNodeAtTail(head, data):
+    nwnode = SinglyLinkedListNode(data)
+    if head is None:
+        return nwnode
+    last = head
+    while last.next != None:
+        last = last.next
+    last.next = nwnode
+    return head
+
+    ques 2:
+
+def printLinkedList(head):
+    ptr = head
+    while ptr:
+        print(ptr.data)
+        ptr = ptr.next
+
+    ques 3 :
+
+def insertNodeAtHead(llist, data):
+    # Write your code here
+    nwnode = SinglyLinkedListNode(data)
+    if llist is None :
+        return nwnode
+    nwnode.next = llist
+    return nwnode
+
+    ques 4 :
+
+def insertNodeAtPosition(llist, data, position):
+    # Write your code here
+    nwnode = SinglyLinkedListNode(data)
+    ptr = llist
+    i=0
+    while i!=position -1 :
+        ptr = ptr.next
+        i+=1
+    nwnode.next = ptr.next
+    ptr.next=nwnode
+    return llist
+
+    ques 5:
+
+def deleteNode(llist, position):
+    # Write your code here
+    if llist is None :
+        return llist
+    if position == 0:
+        llist = llist.next
+    ptr = llist
+    i=0
+    while i!=position-1 and ptr.next is not None:
+        ptr=ptr.next
+        i+=1
+    if ptr.next is not None:
+        ptr.next=ptr.next.next
+    return llist
+
+    ques 6:
+    
