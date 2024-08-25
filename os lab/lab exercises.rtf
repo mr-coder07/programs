@@ -1,0 +1,1052 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1033{\fonttbl{\f0\fnil\fcharset0 Calibri;}}
+{\*\generator Riched20 10.0.22621}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\qc\ul\b\f0\fs36\lang9 lab 3\ulnone\b0\fs22\par
+
+\pard\sa200\sl276\slmult1 ques 1:\par
+#include <stdio.h>\par
+\par
+struct Process \{\par
+    int id;\par
+    int burst_time;\par
+    int waiting_time;\par
+    int turnaround_time;\par
+    int response_time;\par
+\};\par
+\par
+float average_turnaround_time(struct Process processes[], int n) \{\par
+    float total_turnaround_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_turnaround_time += processes[i].turnaround_time;\par
+    \}\par
+    return total_turnaround_time / n;\par
+\}\par
+\par
+float average_waiting_time(struct Process processes[], int n) \{\par
+    float total_waiting_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_waiting_time += processes[i].waiting_time;\par
+    \}\par
+    return total_waiting_time / n;\par
+\}\par
+\par
+float average_response_time(struct Process processes[], int n) \{\par
+    float total_response_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_response_time += processes[i].response_time;\par
+    \}\par
+    return total_response_time / n;\par
+\}\par
+\par
+int main() \{\par
+    struct Process processes[] = \{\par
+        \{1, 6, 0, 0, 0\},\par
+        \{2, 2, 0, 0, 0\},\par
+        \{3, 8, 0, 0, 0\},\par
+        \{4, 3, 0, 0, 0\},\par
+        \{5, 4, 0, 0, 0\}\par
+    \};\par
+\par
+    int n = sizeof(processes) / sizeof(processes[0]);\par
+\par
+    int total_waiting_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        processes[i].waiting_time = total_waiting_time;\par
+        total_waiting_time += processes[i].burst_time;\par
+        processes[i].turnaround_time = processes[i].waiting_time + processes[i].burst_time;\par
+        processes[i].response_time = processes[i].waiting_time;\par
+    \}\par
+\par
+    printf("Average Turnaround Time: %.2f\\n", average_turnaround_time(processes, n));\par
+    printf("Average Waiting Time: %.2f\\n", average_waiting_time(processes, n));\par
+    printf("Average Response Time: %.2f\\n", average_response_time(processes, n));\par
+\par
+    return 0;\par
+\}\par
+ques 2:\par
+Here's the modified program without comments:\par
+\par
+```c\par
+#include <stdio.h>\par
+\par
+struct Process \{\par
+    int id;\par
+    int burst_time;\par
+    int arrival_time;\par
+    int waiting_time;\par
+    int turnaround_time;\par
+    int response_time;\par
+\};\par
+\par
+float average_turnaround_time(struct Process processes[], int n) \{\par
+    float total_turnaround_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_turnaround_time += processes[i].turnaround_time;\par
+    \}\par
+    return total_turnaround_time / n;\par
+\}\par
+\par
+float average_waiting_time(struct Process processes[], int n) \{\par
+    float total_waiting_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_waiting_time += processes[i].waiting_time;\par
+    \}\par
+    return total_waiting_time / n;\par
+\}\par
+\par
+float average_response_time(struct Process processes[], int n) \{\par
+    float total_response_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_response_time += processes[i].response_time;\par
+    \}\par
+    return total_response_time / n;\par
+\}\par
+\par
+int main() \{\par
+    struct Process processes[] = \{\par
+        \{1, 6, 2, 0, 0, 0\},\par
+        \{2, 2, 5, 0, 0, 0\},\par
+        \{3, 8, 1, 0, 0, 0\},\par
+        \{4, 3, 0, 0, 0, 0\},\par
+        \{5, 4, 4, 0, 0, 0\}\par
+    \};\par
+\par
+    int n = sizeof(processes) / sizeof(processes[0]);\par
+\par
+    int total_waiting_time = 0;\par
+    int current_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        if (current_time < processes[i].arrival_time)\par
+            current_time = processes[i].arrival_time;\par
+        processes[i].waiting_time = current_time - processes[i].arrival_time;\par
+        total_waiting_time += processes[i].waiting_time;\par
+        processes[i].turnaround_time = processes[i].waiting_time + processes[i].burst_time;\par
+        processes[i].response_time = processes[i].waiting_time;\par
+        current_time += processes[i].burst_time;\par
+    \}\par
+\par
+    printf("Average Turnaround Time: %.2f\\n", average_turnaround_time(processes, n));\par
+    printf("Average Waiting Time: %.2f\\n", average_waiting_time(processes, n));\par
+    printf("Average Response Time: %.2f\\n", average_response_time(processes, n));\par
+\par
+    return 0;\par
+\}\par
+
+\pard\sa200\sl276\slmult1\qc\ul\b\fs36 lab 4\ulnone\b0\fs22\par
+
+\pard\sa200\sl276\slmult1 ques 1 :\par
+Here's a program in C to implement the Shortest Job First (SJF) Scheduling algorithm, both preemptive and non-preemptive, for the given set of processes:\par
+\par
+```c\par
+#include <stdio.h>\par
+#include <stdbool.h>\par
+\par
+struct Process \{\par
+    int id;\par
+    int burst_time;\par
+    int waiting_time;\par
+    int turnaround_time;\par
+    int response_time;\par
+    bool completed;\par
+\};\par
+\par
+float average_turnaround_time(struct Process processes[], int n) \{\par
+    float total_turnaround_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_turnaround_time += processes[i].turnaround_time;\par
+    \}\par
+    return total_turnaround_time / n;\par
+\}\par
+\par
+float average_waiting_time(struct Process processes[], int n) \{\par
+    float total_waiting_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_waiting_time += processes[i].waiting_time;\par
+    \}\par
+    return total_waiting_time / n;\par
+\}\par
+\par
+float average_response_time(struct Process processes[], int n) \{\par
+    float total_response_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_response_time += processes[i].response_time;\par
+    \}\par
+    return total_response_time / n;\par
+\}\par
+\par
+void sjf_non_preemptive(struct Process processes[], int n) \{\par
+    int total_time = 0;\par
+    int min_burst_time_index;\par
+    int completed_processes = 0;\par
+\par
+    while (completed_processes < n) \{\par
+        int min_burst_time = 9999; // Initializing with a large value\par
+        for (int i = 0; i < n; i++) \{\par
+            if (!processes[i].completed && processes[i].burst_time < min_burst_time) \{\par
+                min_burst_time = processes[i].burst_time;\par
+                min_burst_time_index = i;\par
+            \}\par
+        \}\par
+        processes[min_burst_time_index].waiting_time = total_time;\par
+        total_time += processes[min_burst_time_index].burst_time;\par
+        processes[min_burst_time_index].turnaround_time = total_time;\par
+        processes[min_burst_time_index].completed = true;\par
+        completed_processes++;\par
+    \}\par
+\}\par
+\par
+void sjf_preemptive(struct Process processes[], int n) \{\par
+    int total_time = 0;\par
+    int completed_processes = 0;\par
+\par
+    while (completed_processes < n) \{\par
+        int min_burst_time_index = -1;\par
+        int min_burst_time = 9999; // Initializing with a large value\par
+\par
+        for (int i = 0; i < n; i++) \{\par
+            if (!processes[i].completed && processes[i].burst_time < min_burst_time && processes[i].burst_time > 0) \{\par
+                min_burst_time = processes[i].burst_time;\par
+                min_burst_time_index = i;\par
+            \}\par
+        \}\par
+\par
+        if (min_burst_time_index == -1) \{\par
+            total_time++;\par
+            continue;\par
+        \}\par
+\par
+        if (processes[min_burst_time_index].response_time == -1) \{\par
+            processes[min_burst_time_index].response_time = total_time;\par
+        \}\par
+\par
+        processes[min_burst_time_index].burst_time--;\par
+        total_time++;\par
+\par
+        if (processes[min_burst_time_index].burst_time == 0) \{\par
+            processes[min_burst_time_index].turnaround_time = total_time;\par
+            processes[min_burst_time_index].completed = true;\par
+            completed_processes++;\par
+        \}\par
+    \}\par
+\}\par
+\par
+int main() \{\par
+    struct Process processes[] = \{\par
+        \{1, 6, 0, 0, 0, false\},\par
+        \{2, 2, 0, 0, 0, false\},\par
+        \{3, 8, 0, 0, 0, false\},\par
+        \{4, 3, 0, 0, 0, false\},\par
+        \{5, 4, 0, 0, 0, false\}\par
+    \};\par
+\par
+    int n = sizeof(processes) / sizeof(processes[0]);\par
+\par
+    sjf_non_preemptive(processes, n);\par
+    printf("SJF (Non-Preemptive):\\n");\par
+    printf("Average Turnaround Time: %.2f\\n", average_turnaround_time(processes, n));\par
+    printf("Average Waiting Time: %.2f\\n", average_waiting_time(processes, n));\par
+    printf("Average Response Time: %.2f\\n", average_response_time(processes, n));\par
+\par
+    // Resetting process data for preemptive SJF\par
+    for (int i = 0; i < n; i++) \{\par
+        processes[i].waiting_time = 0;\par
+        processes[i].turnaround_time = 0;\par
+        processes[i].response_time = -1;\par
+        processes[i].completed = false;\par
+    \}\par
+\par
+    sjf_preemptive(processes, n);\par
+    printf("\\nSJF (Preemptive):\\n");\par
+    printf("Average Turnaround Time: %.2f\\n", average_turnaround_time(processes, n));\par
+    printf("Average Waiting Time: %.2f\\n", average_waiting_time(processes, n));\par
+    printf("Average Response Time: %.2f\\n", average_response_time(processes, n));\par
+\par
+    return 0;\par
+\}\par
+ques 2 :\par
+Here's a program in C to implement the Shortest Job First (SJF) Scheduling algorithm, both preemptive and non-preemptive, for the given set of processes along with computation of Average Turn Around Time, Average Waiting Time, Average Response Time, and CPU Utilization:\par
+\par
+```c\par
+#include <stdio.h>\par
+#include <stdbool.h>\par
+\par
+struct Process \{\par
+    int id;\par
+    int burst_time;\par
+    int arrival_time;\par
+    int waiting_time;\par
+    int turnaround_time;\par
+    int response_time;\par
+    bool completed;\par
+\};\par
+\par
+float average_turnaround_time(struct Process processes[], int n) \{\par
+    float total_turnaround_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_turnaround_time += processes[i].turnaround_time;\par
+    \}\par
+    return total_turnaround_time / n;\par
+\}\par
+\par
+float average_waiting_time(struct Process processes[], int n) \{\par
+    float total_waiting_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_waiting_time += processes[i].waiting_time;\par
+    \}\par
+    return total_waiting_time / n;\par
+\}\par
+\par
+float average_response_time(struct Process processes[], int n) \{\par
+    float total_response_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_response_time += processes[i].response_time;\par
+    \}\par
+    return total_response_time / n;\par
+\}\par
+\par
+float cpu_utilization(struct Process processes[], int n, int total_time) \{\par
+    int total_burst_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_burst_time += processes[i].burst_time;\par
+    \}\par
+    return ((float)total_burst_time / total_time) * 100;\par
+\}\par
+\par
+void sjf_non_preemptive(struct Process processes[], int n) \{\par
+    int total_time = 0;\par
+    int min_burst_time_index;\par
+    int completed_processes = 0;\par
+\par
+    while (completed_processes < n) \{\par
+        int min_burst_time = 9999; // Initializing with a large value\par
+        for (int i = 0; i < n; i++) \{\par
+            if (!processes[i].completed && processes[i].arrival_time <= total_time && processes[i].burst_time < min_burst_time) \{\par
+                min_burst_time = processes[i].burst_time;\par
+                min_burst_time_index = i;\par
+            \}\par
+        \}\par
+        processes[min_burst_time_index].waiting_time = total_time - processes[min_burst_time_index].arrival_time;\par
+        total_time += processes[min_burst_time_index].burst_time;\par
+        processes[min_burst_time_index].turnaround_time = total_time - processes[min_burst_time_index].arrival_time;\par
+        processes[min_burst_time_index].completed = true;\par
+        completed_processes++;\par
+    \}\par
+\}\par
+\par
+void sjf_preemptive(struct Process processes[], int n) \{\par
+    int total_time = 0;\par
+    int completed_processes = 0;\par
+\par
+    while (completed_processes < n) \{\par
+        int min_burst_time_index = -1;\par
+        int min_burst_time = 9999; // Initializing with a large value\par
+\par
+        for (int i = 0; i < n; i++) \{\par
+            if (!processes[i].completed && processes[i].arrival_time <= total_time && processes[i].burst_time < min_burst_time) \{\par
+                min_burst_time = processes[i].burst_time;\par
+                min_burst_time_index = i;\par
+            \}\par
+        \}\par
+\par
+        if (min_burst_time_index == -1) \{\par
+            total_time++;\par
+            continue;\par
+        \}\par
+\par
+        if (processes[min_burst_time_index].response_time == -1) \{\par
+            processes[min_burst_time_index].response_time = total_time;\par
+        \}\par
+\par
+        processes[min_burst_time_index].burst_time--;\par
+        total_time++;\par
+\par
+        if (processes[min_burst_time_index].burst_time == 0) \{\par
+            processes[min_burst_time_index].turnaround_time = total_time - processes[min_burst_time_index].arrival_time;\par
+            processes[min_burst_time_index].completed = true;\par
+            completed_processes++;\par
+        \}\par
+    \}\par
+\}\par
+\par
+int main() \{\par
+    struct Process processes[] = \{\par
+        \{1, 6, 2, 0, 0, 0, false\},\par
+        \{2, 2, 5, 0, 0, 0, false\},\par
+        \{3, 8, 1, 0, 0, 0, false\},\par
+        \{4, 3, 7, 0, 0, 0, false\},\par
+        \{5, 4, 4, 0, 0, 0, false\}\par
+    \};\par
+\par
+    int n = sizeof(processes) / sizeof(processes[0]);\par
+\par
+    int total_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_time += processes[i].burst_time;\par
+    \}\par
+\par
+    sjf_non_preemptive(processes, n);\par
+    printf("SJF (Non-Preemptive):\\n");\par
+    printf("Average Turnaround Time: %.2f\\n", average_turnaround_time(processes, n));\par
+    printf("Average Waiting Time: %.2f\\n", average_waiting_time(processes, n));\par
+    printf("Average Response Time: %.2f\\n", average_response_time(processes, n));\par
+    printf("CPU Utilization: %.2f%%\\n", cpu_utilization(processes, n, total_time));\par
+\par
+    // Resetting process data for preemptive SJF\par
+    for (int i = 0; i < n; i++) \{\par
+        processes[i].waiting_time = 0;\par
+        processes[i].turnaround_time = 0;\par
+        processes[i].response_time = -1;\par
+        processes[i].completed = false;\par
+    \}\par
+\par
+    sjf_preemptive(processes, n);\par
+    printf("\\nSJF (Preemptive):\\n");\par
+    printf("Average Turnaround Time: %.2f\\n", average_turnaround_time(processes, n));\par
+    printf("Average Waiting Time: %.2f\\n", average_waiting_time(processes, n));\par
+    printf("Average Response Time: %.2f\\n", average_response_time(processes, n));\par
+    printf("CPU Utilization: %.2f%%\\n", cpu_utilization(processes, n, total_time));\par
+\par
+    return 0;\par
+\}\par
+
+\pard\sa200\sl276\slmult1\qc\ul\b\fs36 lab 5\ulnone\b0\fs22\par
+
+\pard\sa200\sl276\slmult1 ques 1:\par
+#include <stdio.h>\par
+\par
+struct Process \{\par
+    int id;\par
+    int burst_time;\par
+    int remaining_time;\par
+    int waiting_time;\par
+    int turnaround_time;\par
+    int response_time;\par
+\};\par
+\par
+float average_turnaround_time(struct Process processes[], int n) \{\par
+    float total_turnaround_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_turnaround_time += processes[i].turnaround_time;\par
+    \}\par
+    return total_turnaround_time / n;\par
+\}\par
+\par
+float average_waiting_time(struct Process processes[], int n) \{\par
+    float total_waiting_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_waiting_time += processes[i].waiting_time;\par
+    \}\par
+    return total_waiting_time / n;\par
+\}\par
+\par
+float average_response_time(struct Process processes[], int n) \{\par
+    float total_response_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_response_time += processes[i].response_time;\par
+    \}\par
+    return total_response_time / n;\par
+\}\par
+\par
+void round_robin(struct Process processes[], int n, int quantum) \{\par
+    int total_time = 0;\par
+    int completed_processes = 0;\par
+    int time_quantum;\par
+\par
+    for (int i = 0; i < n; i++) \{\par
+        processes[i].remaining_time = processes[i].burst_time;\par
+    \}\par
+\par
+    while (completed_processes < n) \{\par
+        for (int i = 0; i < n; i++) \{\par
+            if (processes[i].remaining_time > 0) \{\par
+                if (processes[i].remaining_time <= quantum) \{\par
+                    total_time += processes[i].remaining_time;\par
+                    processes[i].waiting_time += total_time - processes[i].burst_time;\par
+                    processes[i].remaining_time = 0;\par
+                    completed_processes++;\par
+                    processes[i].turnaround_time = total_time;\par
+                \} else \{\par
+                    total_time += quantum;\par
+                    processes[i].remaining_time -= quantum;\par
+                \}\par
+            \}\par
+        \}\par
+    \}\par
+\par
+    // Calculate response time\par
+    for (int i = 0; i < n; i++) \{\par
+        processes[i].response_time = processes[i].waiting_time;\par
+    \}\par
+\}\par
+\par
+int main() \{\par
+    struct Process processes[] = \{\par
+        \{1, 6, 0, 0, 0, 0\},\par
+        \{2, 2, 0, 0, 0, 0\},\par
+        \{3, 8, 0, 0, 0, 0\},\par
+        \{4, 3, 0, 0, 0, 0\},\par
+        \{5, 4, 0, 0, 0, 0\}\par
+    \};\par
+\par
+    int n = sizeof(processes) / sizeof(processes[0]);\par
+    int quantum = 2;\par
+\par
+    round_robin(processes, n, quantum);\par
+\par
+    printf("Round Robin (Time Quantum = %d):\\n", quantum);\par
+    printf("Average Turnaround Time: %.2f\\n", average_turnaround_time(processes, n));\par
+    printf("Average Waiting Time: %.2f\\n", average_waiting_time(processes, n));\par
+    printf("Average Response Time: %.2f\\n", average_response_time(processes, n));\par
+\par
+    return 0;\par
+\}\par
+ques 2:\par
+#include <stdio.h>\par
+\par
+struct Process \{\par
+    int id;\par
+    int burst_time;\par
+    int arrival_time;\par
+    int remaining_time;\par
+    int waiting_time;\par
+    int turnaround_time;\par
+    int response_time;\par
+\};\par
+\par
+float average_turnaround_time(struct Process processes[], int n) \{\par
+    float total_turnaround_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_turnaround_time += processes[i].turnaround_time;\par
+    \}\par
+    return total_turnaround_time / n;\par
+\}\par
+\par
+float average_waiting_time(struct Process processes[], int n) \{\par
+    float total_waiting_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_waiting_time += processes[i].waiting_time;\par
+    \}\par
+    return total_waiting_time / n;\par
+\}\par
+\par
+float average_response_time(struct Process processes[], int n) \{\par
+    float total_response_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_response_time += processes[i].response_time;\par
+    \}\par
+    return total_response_time / n;\par
+\}\par
+\par
+void round_robin(struct Process processes[], int n, int quantum) \{\par
+    int total_time = 0;\par
+    int completed_processes = 0;\par
+\par
+    for (int i = 0; i < n; i++) \{\par
+        processes[i].remaining_time = processes[i].burst_time;\par
+    \}\par
+\par
+    while (completed_processes < n) \{\par
+        for (int i = 0; i < n; i++) \{\par
+            if (processes[i].remaining_time > 0 && processes[i].arrival_time <= total_time) \{\par
+                if (processes[i].remaining_time <= quantum) \{\par
+                    total_time += processes[i].remaining_time;\par
+                    processes[i].waiting_time += total_time - processes[i].burst_time - processes[i].arrival_time;\par
+                    processes[i].turnaround_time = total_time - processes[i].arrival_time;\par
+                    processes[i].remaining_time = 0;\par
+                    completed_processes++;\par
+                    processes[i].response_time = total_time - processes[i].burst_time - processes[i].arrival_time;\par
+                \} else \{\par
+                    total_time += quantum;\par
+                    processes[i].remaining_time -= quantum;\par
+                \}\par
+            \}\par
+        \}\par
+    \}\par
+\}\par
+\par
+int main() \{\par
+    struct Process processes[] = \{\par
+        \{1, 6, 2, 0, 0, 0, 0\},\par
+        \{2, 2, 5, 0, 0, 0, 0\},\par
+        \{3, 8, 1, 0, 0, 0, 0\},\par
+        \{4, 3, 7, 0, 0, 0, 0\},\par
+        \{5, 4, 4, 0, 0, 0, 0\}\par
+    \};\par
+\par
+    int n = sizeof(processes) / sizeof(processes[0]);\par
+    int quantum = 3;\par
+\par
+    round_robin(processes, n, quantum);\par
+\par
+    printf("Round Robin (Time Quantum = %d):\\n", quantum);\par
+    printf("Average Turnaround Time: %.2f\\n", average_turnaround_time(processes, n));\par
+    printf("Average Waiting Time: %.2f\\n", average_waiting_time(processes, n));\par
+    printf("Average Response Time: %.2f\\n", average_response_time(processes, n));\par
+\par
+    return 0;\par
+\}\par
+
+\pard\sa200\sl276\slmult1\qc\ul\b\fs36 lab 6\ulnone\b0\fs22\par
+
+\pard\sa200\sl276\slmult1 ques 1:\par
+#include <stdio.h>\par
+\par
+struct Process \{\par
+    int id;\par
+    int burst_time;\par
+    int priority;\par
+    int waiting_time;\par
+    int turnaround_time;\par
+    int response_time;\par
+\};\par
+\par
+float average_turnaround_time(struct Process processes[], int n) \{\par
+    float total_turnaround_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_turnaround_time += processes[i].turnaround_time;\par
+    \}\par
+    return total_turnaround_time / n;\par
+\}\par
+\par
+float average_waiting_time(struct Process processes[], int n) \{\par
+    float total_waiting_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_waiting_time += processes[i].waiting_time;\par
+    \}\par
+    return total_waiting_time / n;\par
+\}\par
+\par
+float average_response_time(struct Process processes[], int n) \{\par
+    float total_response_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_response_time += processes[i].response_time;\par
+    \}\par
+    return total_response_time / n;\par
+\}\par
+\par
+void priority_scheduling(struct Process processes[], int n) \{\par
+    // Sort processes by priority (ascending order)\par
+    for (int i = 0; i < n - 1; i++) \{\par
+        for (int j = 0; j < n - i - 1; j++) \{\par
+            if (processes[j].priority > processes[j + 1].priority) \{\par
+                // Swap\par
+                struct Process temp = processes[j];\par
+                processes[j] = processes[j + 1];\par
+                processes[j + 1] = temp;\par
+            \}\par
+        \}\par
+    \}\par
+\par
+    // Calculate waiting time and turnaround time\par
+    int total_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        processes[i].waiting_time = total_time;\par
+        processes[i].turnaround_time = total_time + processes[i].burst_time;\par
+        total_time += processes[i].burst_time;\par
+        processes[i].response_time = processes[i].waiting_time;\par
+    \}\par
+\}\par
+\par
+int main() \{\par
+    struct Process processes[] = \{\par
+        \{1, 6, 2, 0, 0, 0\},\par
+        \{2, 2, 1, 0, 0, 0\},\par
+        \{3, 8, 3, 0, 0, 0\},\par
+        \{4, 3, 4, 0, 0, 0\},\par
+        \{5, 4, 5, 0, 0, 0\}\par
+    \};\par
+\par
+    int n = sizeof(processes) / sizeof(processes[0]);\par
+\par
+    priority_scheduling(processes, n);\par
+\par
+    printf("Priority Scheduling:\\n");\par
+    printf("Average Turnaround Time: %.2f\\n", average_turnaround_time(processes, n));\par
+    printf("Average Waiting Time: %.2f\\n", average_waiting_time(processes, n));\par
+    printf("Average Response Time: %.2f\\n", average_response_time(processes, n));\par
+\par
+    return 0;\par
+\}\par
+ques 2:\par
+#include <stdio.h>\par
+\par
+struct Process \{\par
+    int id;\par
+    int burst_time;\par
+    int arrival_time;\par
+    int priority;\par
+    int waiting_time;\par
+    int turnaround_time;\par
+    int response_time;\par
+\};\par
+\par
+float average_turnaround_time(struct Process processes[], int n) \{\par
+    float total_turnaround_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_turnaround_time += processes[i].turnaround_time;\par
+    \}\par
+    return total_turnaround_time / n;\par
+\}\par
+\par
+float average_waiting_time(struct Process processes[], int n) \{\par
+    float total_waiting_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_waiting_time += processes[i].waiting_time;\par
+    \}\par
+    return total_waiting_time / n;\par
+\}\par
+\par
+float average_response_time(struct Process processes[], int n) \{\par
+    float total_response_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        total_response_time += processes[i].response_time;\par
+    \}\par
+    return total_response_time / n;\par
+\}\par
+\par
+void priority_scheduling(struct Process processes[], int n) \{\par
+    // Sort processes by arrival time (ascending order)\par
+    for (int i = 0; i < n - 1; i++) \{\par
+        for (int j = 0; j < n - i - 1; j++) \{\par
+            if (processes[j].arrival_time > processes[j + 1].arrival_time) \{\par
+                // Swap\par
+                struct Process temp = processes[j];\par
+                processes[j] = processes[j + 1];\par
+                processes[j + 1] = temp;\par
+            \}\par
+        \}\par
+    \}\par
+\par
+    // Calculate waiting time and turnaround time\par
+    int total_time = 0;\par
+    for (int i = 0; i < n; i++) \{\par
+        processes[i].waiting_time = total_time - processes[i].arrival_time;\par
+        if (processes[i].waiting_time < 0)\par
+            processes[i].waiting_time = 0;\par
+        processes[i].turnaround_time = processes[i].waiting_time + processes[i].burst_time;\par
+        total_time += processes[i].burst_time;\par
+        processes[i].response_time = processes[i].waiting_time;\par
+    \}\par
+\}\par
+\par
+int main() \{\par
+    struct Process processes[] = \{\par
+        \{1, 6, 2, 2, 0, 0, 0\},\par
+        \{2, 2, 5, 1, 0, 0, 0\},\par
+        \{3, 8, 1, 3, 0, 0, 0\},\par
+        \{4, 3, 7, 4, 0, 0, 0\},\par
+        \{5, 4, 4, 5, 0, 0, 0\}\par
+    \};\par
+\par
+    int n = sizeof(processes) / sizeof(processes[0]);\par
+\par
+    priority_scheduling(processes, n);\par
+\par
+    printf("Priority Scheduling:\\n");\par
+    printf("Average Turnaround Time: %.2f\\n", average_turnaround_time(processes, n));\par
+    printf("Average Waiting Time: %.2f\\n", average_waiting_time(processes, n));\par
+    printf("Average Response Time: %.2f\\n", average_response_time(processes, n));\par
+\par
+    return 0;\par
+\}\par
+
+\pard\sa200\sl276\slmult1\qc\ul\b\fs36 lab 7\ulnone\b0\fs22\par
+
+\pard\sa200\sl276\slmult1 ques 1:\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+#include <time.h>\par
+\par
+struct Process \{\par
+    int id;\par
+    int tickets;\par
+    int cpu_allocated;\par
+\};\par
+\par
+void lottery_scheduling(struct Process processes[], int n, int total_tickets) \{\par
+    srand(time(NULL));\par
+\par
+    for (int i = 0; i < n; i++) \{\par
+        int random_ticket = rand() % total_tickets + 1; // Random ticket number\par
+        int cumulative_tickets = 0;\par
+\par
+        // Find the process with the winning ticket\par
+        for (int j = 0; j < n; j++) \{\par
+            cumulative_tickets += processes[j].tickets;\par
+            if (random_ticket <= cumulative_tickets) \{\par
+                // Allocate CPU to this process\par
+                processes[j].cpu_allocated++;\par
+                break;\par
+            \}\par
+        \}\par
+    \}\par
+\}\par
+\par
+int main() \{\par
+    struct Process processes[] = \{\par
+        \{1, 600, 0\},\par
+        \{2, 200, 0\},\par
+        \{3, 800, 0\},\par
+        \{4, 300, 0\},\par
+        \{5, 100, 0\}\par
+    \};\par
+\par
+    int n = sizeof(processes) / sizeof(processes[0]);\par
+    int total_tickets = 0;\par
+\par
+    // Calculate total tickets\par
+    for (int i = 0; i < n; i++) \{\par
+        total_tickets += processes[i].tickets;\par
+    \}\par
+\par
+    lottery_scheduling(processes, n, total_tickets);\par
+\par
+    printf("Lottery Scheduling:\\n");\par
+    printf("CPU Allocation to Process:\\n");\par
+    for (int i = 0; i < n; i++) \{\par
+        printf("P%d: %d\\n", processes[i].id, processes[i].cpu_allocated);\par
+    \}\par
+\par
+    return 0;\par
+\}\par
+ques 2:\par
+Apologies for that oversight. Here's the program without comments:\par
+\par
+```c\par
+#include <stdio.h>\par
+#include <stdlib.h>\par
+\par
+struct Process \{\par
+    int id;\par
+    int pass;\par
+    int stride;\par
+    int cpu_allocated;\par
+\};\par
+\par
+void stride_scheduling(struct Process processes[], int n, int max_pass) \{\par
+    int current_pass = 0;\par
+\par
+    while (1) \{\par
+        int min_pass = max_pass;\par
+        struct Process *selected_process = NULL;\par
+\par
+        for (int i = 0; i < n; i++) \{\par
+            if (processes[i].pass < min_pass) \{\par
+                min_pass = processes[i].pass;\par
+                selected_process = &processes[i];\par
+            \}\par
+        \}\par
+\par
+        if (selected_process == NULL)\par
+            break;\par
+\par
+        selected_process->cpu_allocated++;\par
+\par
+        selected_process->pass += selected_process->stride;\par
+\par
+        if (selected_process->pass >= max_pass)\par
+            selected_process->pass -= max_pass;\par
+\par
+        current_pass++;\par
+    \}\par
+\}\par
+\par
+int main() \{\par
+    struct Process processes[] = \{\par
+        \{1, 0, 2, 0\},\par
+        \{2, 0, 3, 0\},\par
+        \{3, 0, 4, 0\},\par
+        \{4, 0, 5, 0\},\par
+        \{5, 0, 6, 0\}\par
+    \};\par
+\par
+    int n = sizeof(processes) / sizeof(processes[0]);\par
+    int max_pass = 1000;\par
+\par
+    stride_scheduling(processes, n, max_pass);\par
+\par
+    printf("Stride Scheduling:\\n");\par
+    printf("CPU Allocation to Process:\\n");\par
+    for (int i = 0; i < n; i++) \{\par
+        printf("P%d: %d\\n", processes[i].id, processes[i].cpu_allocated);\par
+    \}\par
+\par
+    return 0;\par
+\}\par
+
+\pard\sa200\sl276\slmult1\qc\ul\b\fs36 lab 8\ulnone\b0\fs22\par
+
+\pard\sa200\sl276\slmult1 ques 1:\par
+#include <stdio.h>\par
+\par
+#define NUM_PARTITIONS 6\par
+#define NUM_PROCESSES 5\par
+\par
+int partitions[NUM_PARTITIONS] = \{300, 600, 350, 200, 750, 125\};\par
+int processes[NUM_PROCESSES] = \{115, 500, 358, 200, 375\};\par
+\par
+void best_fit() \{\par
+    int allocation[NUM_PROCESSES];\par
+    int i, j;\par
+\par
+    for (i = 0; i < NUM_PROCESSES; i++) \{\par
+        int best_index = -1;\par
+        for (j = 0; j < NUM_PARTITIONS; j++) \{\par
+            if (partitions[j] >= processes[i]) \{\par
+                if (best_index == -1 || partitions[j] < partitions[best_index]) \{\par
+                    best_index = j;\par
+                \}\par
+            \}\par
+        \}\par
+        if (best_index != -1) \{\par
+            allocation[i] = best_index;\par
+            partitions[best_index] -= processes[i];\par
+        \} else \{\par
+            allocation[i] = -1;\par
+        \}\par
+    \}\par
+\par
+    printf("Best Fit Allocation: ");\par
+    for (i = 0; i < NUM_PROCESSES; i++) \{\par
+        if (allocation[i] != -1) \{\par
+            printf("%d ", allocation[i]);\par
+        \} else \{\par
+            printf("NA ");\par
+        \}\par
+    \}\par
+    printf("\\n");\par
+\}\par
+\par
+void first_fit() \{\par
+    int allocation[NUM_PROCESSES];\par
+    int i, j;\par
+\par
+    for (i = 0; i < NUM_PROCESSES; i++) \{\par
+        for (j = 0; j < NUM_PARTITIONS; j++) \{\par
+            if (partitions[j] >= processes[i]) \{\par
+                allocation[i] = j;\par
+                partitions[j] -= processes[i];\par
+                break;\par
+            \}\par
+        \}\par
+        if (j == NUM_PARTITIONS) \{\par
+            allocation[i] = -1;\par
+        \}\par
+    \}\par
+\par
+    printf("First Fit Allocation: ");\par
+    for (i = 0; i < NUM_PROCESSES; i++) \{\par
+        if (allocation[i] != -1) \{\par
+            printf("%d ", allocation[i]);\par
+        \} else \{\par
+            printf("NA ");\par
+        \}\par
+    \}\par
+    printf("\\n");\par
+\}\par
+\par
+void next_fit() \{\par
+    int allocation[NUM_PROCESSES];\par
+    int i, j, last_index = 0;\par
+\par
+    for (i = 0; i < NUM_PROCESSES; i++) \{\par
+        for (j = last_index; j < NUM_PARTITIONS; j++) \{\par
+            if (partitions[j] >= processes[i]) \{\par
+                allocation[i] = j;\par
+                partitions[j] -= processes[i];\par
+                last_index = j;\par
+                break;\par
+            \}\par
+        \}\par
+        if (j == NUM_PARTITIONS) \{\par
+            allocation[i] = -1;\par
+        \}\par
+    \}\par
+\par
+    printf("Next Fit Allocation: ");\par
+    for (i = 0; i < NUM_PROCESSES; i++) \{\par
+        if (allocation[i] != -1) \{\par
+            printf("%d ", allocation[i]);\par
+        \} else \{\par
+            printf("NA ");\par
+        \}\par
+    \}\par
+    printf("\\n");\par
+\}\par
+\par
+void worst_fit() \{\par
+    int allocation[NUM_PROCESSES];\par
+    int i, j;\par
+\par
+    for (i = 0; i < NUM_PROCESSES; i++) \{\par
+        int worst_index = -1;\par
+        for (j = 0; j < NUM_PARTITIONS; j++) \{\par
+            if (partitions[j] >= processes[i]) \{\par
+                if (worst_index == -1 || partitions[j] > partitions[worst_index]) \{\par
+                    worst_index = j;\par
+                \}\par
+            \}\par
+        \}\par
+        if (worst_index != -1) \{\par
+            allocation[i] = worst_index;\par
+            partitions[worst_index] -= processes[i];\par
+        \} else \{\par
+            allocation[i] = -1;\par
+        \}\par
+    \}\par
+\par
+    printf("Worst Fit Allocation: ");\par
+    for (i = 0; i < NUM_PROCESSES; i++) \{\par
+        if (allocation[i] != -1) \{\par
+            printf("%d ", allocation[i]);\par
+        \} else \{\par
+            printf("NA ");\par
+        \}\par
+    \}\par
+    printf("\\n");\par
+\}\par
+\par
+int main() \{\par
+    printf("Memory Partition: ");\par
+    for (int i = 0; i < NUM_PARTITIONS; i++) \{\par
+        printf("%d KB ", partitions[i]);\par
+    \}\par
+    printf("\\n");\par
+\par
+    printf("Process Request: ");\par
+    for (int i = 0; i < NUM_PROCESSES; i++) \{\par
+        printf("%d KB ", processes[i]);\par
+    \}\par
+    printf("\\n");\par
+\par
+    best_fit();\par
+    first_fit();\par
+    next_fit();\par
+    worst_fit();\par
+\par
+    return 0;\par
+\}\par
+ques 2:\par
+#include <stdio.h>\par
+#include <stdint.h>\par
+\par
+#define PAGE_SIZE 4096 // Assuming page size is 4KB\par
+\par
+void find_page_number_and_offset(uintptr_t virtual_address) \{\par
+    uintptr_t page_number = virtual_address / PAGE_SIZE;\par
+    uintptr_t offset = virtual_address % PAGE_SIZE;\par
+\par
+    printf("Virtual Address: %lu\\n", virtual_address);\par
+    printf("Page Number: %lu\\n", page_number);\par
+    printf("Offset: %lu\\n", offset);\par
+\}\par
+\par
+int main() \{\par
+    // Example virtual address\par
+    uintptr_t virtual_address = 0x12345678;\par
+\par
+    find_page_number_and_offset(virtual_address);\par
+\par
+    return 0;\par
+\}\par
+}
+ 
