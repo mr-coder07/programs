@@ -1,0 +1,567 @@
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 34
+Server version: 8.1.0 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> user();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'user()' at line 1
+mysql> select user();
++----------------+
+| user()         |
++----------------+
+| root@localhost |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> use om
+Database changed
+mysql> show tables
+    -> ;
++----------------+
+| Tables_in_om   |
++----------------+
+| department     |
+| dependent      |
+| dept_locations |
+| employee       |
+| project        |
+| student        |
+| works_on       |
++----------------+
+7 rows in set (0.01 sec)
+
+mysql> desc employee
+    -> ;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| fname     | varchar(20)  | YES  |     | NULL    |       |
+| minit     | char(1)      | YES  |     | NULL    |       |
+| lname     | varchar(15)  | YES  |     | NULL    |       |
+| ssn       | int          | NO   | PRI | NULL    |       |
+| bdate     | date         | YES  |     | NULL    |       |
+| address   | varchar(100) | YES  |     | NULL    |       |
+| sex       | char(1)      | YES  |     | NULL    |       |
+| salary    | int          | YES  |     | NULL    |       |
+| super_ssn | int          | YES  |     | NULL    |       |
+| dno       | int          | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+mysql> select * from employee;
++----------+-------+---------+-----------+------------+--------------------------+------+--------+-----------+------+
+| fname    | minit | lname   | ssn       | bdate      | address
+     | sex  | salary | super_ssn | dno  |
++----------+-------+---------+-----------+------------+--------------------------+------+--------+-----------+------+
+| om       | a     | mishra  | 112233445 | 1976-08-20 | jhalwa india TX          | m    |  90000 |      NULL |    5 |
+| john     | b     | smith   | 123456789 | 1965-01-09 | 731 fondren, Houston,TX  | m    |  30000 | 333445555 |    5 |
+| franklin | t     | wong    | 333445555 | 1955-12-08 | 638 voss, Houston, TX    | m    |  40000 | 888665555 |    5 |
+| joyce    | a     | english | 453453453 | 1972-07-31 | 5631 rice, houston, TX   | f    |  25000 | 333445555 |    5 |
+| ramesh   | k     | narayan | 666884444 | 1962-09-15 | 975 fire oka, humble, TX | m    |  38000 | 333445555 |    5 |
+| james    | e     | borg    | 888665555 | 1937-11-10 | 450 stone, Houston, TX   | m    |  55000 |      NULL |    1 |
+| jennifer | s     | wallace | 987654321 | 1941-06-20 | 291 berry,Bellaire, TX   | f    |  43000 | 888665555 |    4 |
+| ahmad    | v     | jabbar  | 987987987 | 1969-03-29 | 980 Dallas, Houston, TX  | m    |  25000 | 987654321 |    4 |
+| alicia   | j     | zelaya  | 999887777 | 1968-01-19 | 3321 Castle, spring, TX  | f    |  25000 | 987654321 |    4 |
++----------+-------+---------+-----------+------------+--------------------------+------+--------+-----------+------+
+9 rows in set (0.00 sec)
+
+mysql> select dno from employee;
++------+
+| dno  |
++------+
+|    5 |
+|    5 |
+|    5 |
+|    5 |
+|    5 |
+|    1 |
+|    4 |
+|    4 |
+|    4 |
++------+
+9 rows in set (0.00 sec)
+
+mysql> alter table employee add constraint fk_1 foreign key(super_ssn) references employee(ssn);
+Query OK, 9 rows affected (0.09 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| fname     | varchar(20)  | YES  |     | NULL    |       |
+| minit     | char(1)      | YES  |     | NULL    |       |
+| lname     | varchar(15)  | YES  |     | NULL    |       |
+| ssn       | int          | NO   | PRI | NULL    |       |
+| bdate     | date         | YES  |     | NULL    |       |
+| address   | varchar(100) | YES  |     | NULL    |       |
+| sex       | char(1)      | YES  |     | NULL    |       |
+| salary    | int          | YES  |     | NULL    |       |
+| super_ssn | int          | YES  | MUL | NULL    |       |
+| dno       | int          | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+mysql> alter table employee modify dno int unique key;
+ERROR 1062 (23000): Duplicate entry '5' for key 'employee.dno'
+mysql> desc department;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| dname          | varchar(15) | YES  |     | NULL    |       |
+| dnumber        | int         | YES  |     | NULL    |       |
+| mgr_ssn        | int         | YES  | MUL | NULL    |       |
+| mgr_start_date | date        | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> select * from department;
++----------------+---------+-----------+----------------+
+| dname          | dnumber | mgr_ssn   | mgr_start_date |
++----------------+---------+-----------+----------------+
+| research       |       5 | 333445555 | 1988-05-22     |
+| administration |       4 | 987654321 | 1995-01-01     |
+| headquaters    |       1 | 888665555 | 1981-06-19     |
+| supreme court  |       4 | 112233445 | 1976-08-20     |
++----------------+---------+-----------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select *from department d , employee e right join where d.dnumber = e.dno;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where d.dnumber = e.dno' at line 1
+mysql> select *from department d , employee e right join ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> select *from department right join employee on department.dnumber = employee.dno;
++----------------+---------+-----------+----------------+----------+-------+---------+-----------+------------+--------------------------+------+--------+-----------+------+
+| dname          | dnumber | mgr_ssn   | mgr_start_date | fname    | minit | lname   | ssn       | bdate      | address                  | sex  | salary | super_ssn | dno  |
++----------------+---------+-----------+----------------+----------+-------+---------+-----------+------------+--------------------------+------+--------+-----------+------+
+| research       |       5 | 333445555 | 1988-05-22     | om       | a     | mishra  | 112233445 | 1976-08-20 | jhalwa india TX          | m    |  90000 |      NULL |    5 |
+| research       |       5 | 333445555 | 1988-05-22     | john     | b     | smith   | 123456789 | 1965-01-09 | 731 fondren, Houston,TX  | m    |  30000 | 333445555 |    5 |
+| research       |       5 | 333445555 | 1988-05-22     | franklin | t     | wong    | 333445555 | 1955-12-08 | 638 voss, Houston, TX    | m    |  40000 | 888665555 |    5 |
+| research       |       5 | 333445555 | 1988-05-22     | joyce    | a     | english | 453453453 | 1972-07-31 | 5631 rice, houston, TX   | f    |  25000 | 333445555 |    5 |
+| research       |       5 | 333445555 | 1988-05-22     | ramesh   | k     | narayan | 666884444 | 1962-09-15 | 975 fire oka, humble, TX | m    |  38000 | 333445555 |    5 |
+| headquaters    |       1 | 888665555 | 1981-06-19     | james    | e     | borg    | 888665555 | 1937-11-10 | 450 stone, Houston, TX   | m    |  55000 |      NULL |    1 |
+| supreme court  |       4 | 112233445 | 1976-08-20     | jennifer | s     | wallace | 987654321 | 1941-06-20 | 291 berry,Bellaire, TX   | f    |  43000 | 888665555 |    4 |
+| administration |       4 | 987654321 | 1995-01-01     | jennifer | s     | wallace | 987654321 | 1941-06-20 | 291 berry,Bellaire, TX   | f    |  43000 | 888665555 |    4 |
+| supreme court  |       4 | 112233445 | 1976-08-20     | ahmad    | v     | jabbar  | 987987987 | 1969-03-29 | 980 Dallas, Houston, TX  | m    |  25000 | 987654321 |    4 |
+| administration |       4 | 987654321 | 1995-01-01     | ahmad    | v     | jabbar  | 987987987 | 1969-03-29 | 980 Dallas, Houston, TX  | m    |  25000 | 987654321 |    4 |
+| supreme court  |       4 | 112233445 | 1976-08-20     | alicia   | j     | zelaya  | 999887777 | 1968-01-19 | 3321 Castle, spring, TX  | f    |  25000 | 987654321 |    4 |
+| administration |       4 | 987654321 | 1995-01-01     | alicia   | j     | zelaya  | 999887777 | 1968-01-19 | 3321 Castle, spring, TX  | f    |  25000 | 987654321 |    4 |
++----------------+---------+-----------+----------------+----------+-------+---------+-----------+------------+--------------------------+------+--------+-----------+------+
+12 rows in set (0.00 sec)
+
+mysql> select *from department d, employee e where d.dnumber = e.dno;
++----------------+---------+-----------+----------------+----------+-------+---------+-----------+------------+--------------------------+------+--------+-----------+------+
+| dname          | dnumber | mgr_ssn   | mgr_start_date | fname    | minit | lname   | ssn       | bdate      | address                  | sex  | salary | super_ssn | dno  |
++----------------+---------+-----------+----------------+----------+-------+---------+-----------+------------+--------------------------+------+--------+-----------+------+
+| research       |       5 | 333445555 | 1988-05-22     | om       | a     | mishra  | 112233445 | 1976-08-20 | jhalwa india TX          | m    |  90000 |      NULL |    5 |
+| research       |       5 | 333445555 | 1988-05-22     | john     | b     | smith   | 123456789 | 1965-01-09 | 731 fondren, Houston,TX  | m    |  30000 | 333445555 |    5 |
+| research       |       5 | 333445555 | 1988-05-22     | franklin | t     | wong    | 333445555 | 1955-12-08 | 638 voss, Houston, TX    | m    |  40000 | 888665555 |    5 |
+| research       |       5 | 333445555 | 1988-05-22     | joyce    | a     | english | 453453453 | 1972-07-31 | 5631 rice, houston, TX   | f    |  25000 | 333445555 |    5 |
+| research       |       5 | 333445555 | 1988-05-22     | ramesh   | k     | narayan | 666884444 | 1962-09-15 | 975 fire oka, humble, TX | m    |  38000 | 333445555 |    5 |
+| headquaters    |       1 | 888665555 | 1981-06-19     | james    | e     | borg    | 888665555 | 1937-11-10 | 450 stone, Houston, TX   | m    |  55000 |      NULL |    1 |
+| supreme court  |       4 | 112233445 | 1976-08-20     | jennifer | s     | wallace | 987654321 | 1941-06-20 | 291 berry,Bellaire, TX   | f    |  43000 | 888665555 |    4 |
+| administration |       4 | 987654321 | 1995-01-01     | jennifer | s     | wallace | 987654321 | 1941-06-20 | 291 berry,Bellaire, TX   | f    |  43000 | 888665555 |    4 |
+| supreme court  |       4 | 112233445 | 1976-08-20     | ahmad    | v     | jabbar  | 987987987 | 1969-03-29 | 980 Dallas, Houston, TX  | m    |  25000 | 987654321 |    4 |
+| administration |       4 | 987654321 | 1995-01-01     | ahmad    | v     | jabbar  | 987987987 | 1969-03-29 | 980 Dallas, Houston, TX  | m    |  25000 | 987654321 |    4 |
+| supreme court  |       4 | 112233445 | 1976-08-20     | alicia   | j     | zelaya  | 999887777 | 1968-01-19 | 3321 Castle, spring, TX  | f    |  25000 | 987654321 |    4 |
+| administration |       4 | 987654321 | 1995-01-01     | alicia   | j     | zelaya  | 999887777 | 1968-01-19 | 3321 Castle, spring, TX  | f    |  25000 | 987654321 |    4 |
++----------------+---------+-----------+----------------+----------+-------+---------+-----------+------------+--------------------------+------+--------+-----------+------+
+12 rows in set (0.00 sec)
+
+mysql> alter table project pnumber int primary key;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'pnumber int primary key' at line 1
+mysql> desc project;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| pname     | varchar(20) | YES  |     | NULL    |       |
+| pnumber   | int         | YES  |     | NULL    |       |
+| plocation | varchar(20) | YES  |     | NULL    |       |
+| dnum      | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table project modify pnumber int primary key;
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc department;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| dname          | varchar(15) | YES  |     | NULL    |       |
+| dnumber        | int         | YES  |     | NULL    |       |
+| mgr_ssn        | int         | YES  | MUL | NULL    |       |
+| mgr_start_date | date        | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+
+mysql> show create table department;
++------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table      | Create Table
+
+
+
+                                                          |
++------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| department | CREATE TABLE `department` (
+  `dname` varchar(15) DEFAULT NULL,
+  `dnumber` int DEFAULT NULL,
+  `mgr_ssn` int DEFAULT NULL,
+  `mgr_start_date` date DEFAULT NULL,
+  KEY `fk_department` (`mgr_ssn`),
+  CONSTRAINT `fk_department` FOREIGN KEY (`mgr_ssn`) REFERENCES `employee` (`ssn`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+
+mysql> select fname from employee union select mgr_ssn from department;
++-----------+
+| fname     |
++-----------+
+| om        |
+| john      |
+| franklin  |
+| joyce     |
+| ramesh    |
+| james     |
+| jennifer  |
+| ahmad     |
+| alicia    |
+| 112233445 |
+| 333445555 |
+| 888665555 |
+| 987654321 |
++-----------+
+13 rows in set (0.01 sec)
+
+mysql> select fname from employee union all select mgr_ssn from department;
++-----------+
+| fname     |
++-----------+
+| om        |
+| john      |
+| franklin  |
+| joyce     |
+| ramesh    |
+| james     |
+| jennifer  |
+| ahmad     |
+| alicia    |
+| 112233445 |
+| 333445555 |
+| 888665555 |
+| 987654321 |
++-----------+
+13 rows in set (0.00 sec)
+
+mysql> desc project;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| pname     | varchar(20) | YES  |     | NULL    |       |
+| pnumber   | int         | NO   | PRI | NULL    |       |
+| plocation | varchar(20) | YES  |     | NULL    |       |
+| dnum      | int         | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> show table;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> show tables;
++----------------+
+| Tables_in_om   |
++----------------+
+| department     |
+| dependent      |
+| dept_locations |
+| employee       |
+| project        |
+| student        |
+| works_on       |
++----------------+
+7 rows in set (0.00 sec)
+
+mysql> desc works_on;
++-------+-------+------+-----+---------+-------+
+| Field | Type  | Null | Key | Default | Extra |
++-------+-------+------+-----+---------+-------+
+| essn  | int   | YES  |     | NULL    |       |
+| pno   | int   | YES  |     | NULL    |       |
+| hours | float | YES  |     | NULL    |       |
++-------+-------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> alter table works_on add constraint fk_3 foreign key(essn) references
+ employee(ssn);
+Query OK, 16 rows affected (0.05 sec)
+Records: 16  Duplicates: 0  Warnings: 0
+
+mysql> desc dependent;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| essn           | int         | YES  |     | NULL    |       |
+| dependent_name | varchar(15) | YES  |     | NULL    |       |
+| sex            | char(1)     | YES  |     | NULL    |       |
+| bdate          | date        | YES  |     | NULL    |       |
+| relationship   | varchar(15) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+mysql> select * from dependent;
++-----------+----------------+------+------------+--------------+
+| essn      | dependent_name | sex  | bdate      | relationship |
++-----------+----------------+------+------------+--------------+
+|  33344555 | alice          | f    | 1986-04-05 | daughter     |
+|  33344555 | theodore       | m    | 1983-10-25 | son          |
+|  33344555 | joy            | f    | 1958-05-03 | spouse       |
+| 987654321 | abner          | m    | 1942-02-28 | spouse       |
+| 123456789 | Michael        | m    | 1988-01-04 | son          |
+| 123456789 | alice          | f    | 1988-12-30 | daughter     |
+| 123456789 | elizabeth      | f    | 1967-05-05 | spouse       |
++-----------+----------------+------+------------+--------------+
+7 rows in set (0.00 sec)
+
+mysql> select *from employee;
++----------+-------+---------+-----------+------------+--------------------------+------+--------+-----------+------+
+| fname    | minit | lname   | ssn       | bdate      | address
+     | sex  | salary | super_ssn | dno  |
++----------+-------+---------+-----------+------------+--------------------------+------+--------+-----------+------+
+| om       | a     | mishra  | 112233445 | 1976-08-20 | jhalwa india TX          | m    |  90000 |      NULL |    5 |
+| john     | b     | smith   | 123456789 | 1965-01-09 | 731 fondren, Houston,TX  | m    |  30000 | 333445555 |    5 |
+| franklin | t     | wong    | 333445555 | 1955-12-08 | 638 voss, Houston, TX    | m    |  40000 | 888665555 |    5 |
+| joyce    | a     | english | 453453453 | 1972-07-31 | 5631 rice, houston, TX   | f    |  25000 | 333445555 |    5 |
+| ramesh   | k     | narayan | 666884444 | 1962-09-15 | 975 fire oka, humble, TX | m    |  38000 | 333445555 |    5 |
+| james    | e     | borg    | 888665555 | 1937-11-10 | 450 stone, Houston, TX   | m    |  55000 |      NULL |    1 |
+| jennifer | s     | wallace | 987654321 | 1941-06-20 | 291 berry,Bellaire, TX   | f    |  43000 | 888665555 |    4 |
+| ahmad    | v     | jabbar  | 987987987 | 1969-03-29 | 980 Dallas, Houston, TX  | m    |  25000 | 987654321 |    4 |
+| alicia   | j     | zelaya  | 999887777 | 1968-01-19 | 3321 Castle, spring, TX  | f    |  25000 | 987654321 |    4 |
++----------+-------+---------+-----------+------------+--------------------------+------+--------+-----------+------+
+9 rows in set (0.00 sec)
+
+mysql> select *from department;
++----------------+---------+-----------+----------------+
+| dname          | dnumber | mgr_ssn   | mgr_start_date |
++----------------+---------+-----------+----------------+
+| research       |       5 | 333445555 | 1988-05-22     |
+| administration |       4 | 987654321 | 1995-01-01     |
+| headquaters    |       1 | 888665555 | 1981-06-19     |
+| supreme court  |       4 | 112233445 | 1976-08-20     |
++----------------+---------+-----------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> select *from project;
++-----------------+---------+-----------+------+
+| pname           | pnumber | plocation | dnum |
++-----------------+---------+-----------+------+
+| productx        |       1 | bellaire  |    5 |
+| producty        |       2 | sugarland |    5 |
+| productz        |       3 | houston   |    5 |
+| computerization |      10 | stafford  |    4 |
+| reorganization  |      20 | houston   |    1 |
+| newbenefits     |      30 | stafford  |    4 |
++-----------------+---------+-----------+------+
+6 rows in set (0.00 sec)
+
+mysql> select *from works_on;
++-----------+------+-------+
+| essn      | pno  | hours |
++-----------+------+-------+
+| 123456789 |    1 |  32.5 |
+| 123456789 |    2 |   7.5 |
+| 666884444 |    3 |    40 |
+| 453453453 |    1 |    20 |
+| 453453453 |    2 |    20 |
+| 333445555 |    2 |    10 |
+| 333445555 |    3 |    10 |
+| 333445555 |   10 |    10 |
+| 333445555 |   20 |    10 |
+| 999887777 |   30 |    30 |
+| 999887777 |   10 |    10 |
+| 987987987 |   10 |    35 |
+| 987987987 |   30 |     5 |
+| 987654321 |   30 |    20 |
+| 987654321 |   20 |    15 |
+| 888665555 |   20 |  NULL |
++-----------+------+-------+
+16 rows in set (0.00 sec)
+
+mysql> select *from dependent;
++-----------+----------------+------+------------+--------------+
+| essn      | dependent_name | sex  | bdate      | relationship |
++-----------+----------------+------+------------+--------------+
+|  33344555 | alice          | f    | 1986-04-05 | daughter     |
+|  33344555 | theodore       | m    | 1983-10-25 | son          |
+|  33344555 | joy            | f    | 1958-05-03 | spouse       |
+| 987654321 | abner          | m    | 1942-02-28 | spouse       |
+| 123456789 | Michael        | m    | 1988-01-04 | son          |
+| 123456789 | alice          | f    | 1988-12-30 | daughter     |
+| 123456789 | elizabeth      | f    | 1967-05-05 | spouse       |
++-----------+----------------+------+------------+--------------+
+7 rows in set (0.00 sec)
+
+mysql> show create table employee;
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table                        |
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| employee | CREATE TABLE `employee` (
+  `fname` varchar(20) DEFAULT NULL,
+  `minit` char(1) DEFAULT NULL,
+  `lname` varchar(15) DEFAULT NULL,
+  `ssn` int NOT NULL,
+  `bdate` date DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `sex` char(1) DEFAULT NULL,
+  `salary` int DEFAULT NULL,
+  `super_ssn` int DEFAULT NULL,
+  `dno` int DEFAULT NULL,
+  PRIMARY KEY (`ssn`),
+  UNIQUE KEY `ssn` (`ssn`),
+  UNIQUE KEY `ssn_2` (`ssn`),
+  UNIQUE KEY `ssn_3` (`ssn`),
+  KEY `fk_1` (`super_ssn`),
+  CONSTRAINT `fk_1` FOREIGN KEY (`super_ssn`) REFERENCES `employee` (`ssn`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> alter table employee drop constraint fk_1;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employee;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| fname     | varchar(20)  | YES  |     | NULL    |       |
+| minit     | char(1)      | YES  |     | NULL    |       |
+| lname     | varchar(15)  | YES  |     | NULL    |       |
+| ssn       | int          | NO   | PRI | NULL    |       |
+| bdate     | date         | YES  |     | NULL    |       |
+| address   | varchar(100) | YES  |     | NULL    |       |
+| sex       | char(1)      | YES  |     | NULL    |       |
+| salary    | int          | YES  |     | NULL    |       |
+| super_ssn | int          | YES  | MUL | NULL    |       |
+| dno       | int          | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+mysql> desc department;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| dname          | varchar(15) | YES  |     | NULL    |       |
+| dnumber        | int         | YES  |     | NULL    |       |
+| mgr_ssn        | int         | YES  | MUL | NULL    |       |
+| mgr_start_date | date        | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> alter table department drop constraint fk_department;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> delete from employee where fname like "om";
+Query OK, 1 row affected (0.01 sec)
+
+mysql> desc department;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| dname          | varchar(15) | YES  |     | NULL    |       |
+| dnumber        | int         | YES  |     | NULL    |       |
+| mgr_ssn        | int         | YES  | MUL | NULL    |       |
+| mgr_start_date | date        | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> delete from employee where fname like "om";
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> desc employee;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| fname     | varchar(20)  | YES  |     | NULL    |       |
+| minit     | char(1)      | YES  |     | NULL    |       |
+| lname     | varchar(15)  | YES  |     | NULL    |       |
+| ssn       | int          | NO   | PRI | NULL    |       |
+| bdate     | date         | YES  |     | NULL    |       |
+| address   | varchar(100) | YES  |     | NULL    |       |
+| sex       | char(1)      | YES  |     | NULL    |       |
+| salary    | int          | YES  |     | NULL    |       |
+| super_ssn | int          | YES  | MUL | NULL    |       |
+| dno       | int          | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+mysql> show create table employee;
++----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table    | Create Table
+                       |
++----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| employee | CREATE TABLE `employee` (
+  `fname` varchar(20) DEFAULT NULL,
+  `minit` char(1) DEFAULT NULL,
+  `lname` varchar(15) DEFAULT NULL,
+  `ssn` int NOT NULL,
+  `bdate` date DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `sex` char(1) DEFAULT NULL,
+  `salary` int DEFAULT NULL,
+  `super_ssn` int DEFAULT NULL,
+  `dno` int DEFAULT NULL,
+  PRIMARY KEY (`ssn`),
+  UNIQUE KEY `ssn` (`ssn`),
+  UNIQUE KEY `ssn_2` (`ssn`),
+  UNIQUE KEY `ssn_3` (`ssn`),
+  KEY `fk_1` (`super_ssn`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> show create table department;
++------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table      | Create Table
+
+
+                                                  |
++------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| department | CREATE TABLE `department` (
+  `dname` varchar(15) DEFAULT NULL,
+  `dnumber` int DEFAULT NULL,
+  `mgr_ssn` int DEFAULT NULL,
+  `mgr_start_date` date DEFAULT NULL,
+  KEY `fk_department` (`mgr_ssn`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> show create table department; alter table dependent add constraint fk_4 foreign key(essn) reference
++------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table      | Create Table
+
+
+                                                  |
++------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| department | CREATE TABLE `department` (
+  `dname` varchar(15) DEFAULT NULL,
+  `dnumber` int DEFAULT NULL,
+  `mgr_ssn` int DEFAULT NULL,
+  `mgr_start_date` date DEFAULT NULL,
+  KEY `fk_department` (`mgr_ssn`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci |
++------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)

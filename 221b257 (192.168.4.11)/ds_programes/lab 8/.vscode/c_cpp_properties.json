@@ -1,0 +1,38 @@
+{
+  "configurations": [
+    {
+      "name": "windows-gcc-x64",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
+      "compilerPath": "gcc",
+      "intelliSenseMode": "windows-gcc-x64",
+      "compilerArgs": [
+        ""
+      ],
+      "compilerPathInCppPropertiesJson": "C:/MinGW/bin/gcc.exe",
+      "mergeConfigurations": false,
+      "browse": {
+        "path": [
+          "n:/ds_programes/lab 8/**",
+          "${workspaceFolder}"
+        ],
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "cppStandard": "${default}",
+      "cStandard": "${default}"
+    },
+    {
+      "name": "windows-g++-x64",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
+      "defines": [
+        "_DEBUG",
+        "UNICODE",
+        "_UNICODE"
+      ]
+    }
+  ],
+  "version": 4
+}

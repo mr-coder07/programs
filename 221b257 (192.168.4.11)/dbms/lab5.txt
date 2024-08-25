@@ -1,0 +1,119 @@
+mysql>  create database lab5_221B257;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> use  lab5_221B257;
+Database changed
+
+mysql> create table emp ( fname varchar(10) , ssn int(9) , salary int);
+Query OK, 0 rows affected, 1 warning (0.17 sec)
+
+mysql> insert into emp values ("jhon ", 123456789 , 30000),
+    -> ("franklin" , 333445555 , 40000),
+    -> ("joyce" , 453453453 , 25000),
+    -> ("ramesh", 666884444 , 38000),
+    -> ("james", 888665555 ,55000),
+    -> ("jennifer", 987654321 , 43000),
+    -> ("ahmad", 987987987 , 25000),
+    -> ("alicia", 999887777 , 25000);
+Query OK, 8 rows affected (0.06 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> desc emp;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| fname  | varchar(10) | YES  |     | NULL    |       |
+| ssn    | int         | YES  |     | NULL    |       |
+| salary | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.02 sec)
+
+mysql> alter table emp add  genders char(2);
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++----------+-----------+--------+--------+
+| fname    | ssn       | salary | gender |
++----------+-----------+--------+--------+
+| jhon     | 123456789 |  30000 | NULL   |
+| franklin | 333445555 |  40000 | NULL   |
+| joyce    | 453453453 |  25000 | NULL   |
+| ramesh   | 666884444 |  38000 | NULL   |
+| james    | 888665555 |  55000 | NULL   |
+| jennifer | 987654321 |  43000 | NULL   |
+| ahmad    | 987987987 |  25000 | NULL   |
+| alicia   | 999887777 |  25000 | NULL   |
++----------+-----------+--------+--------+
+8 rows in set (0.00 sec)
+
+alter table emp add dno int;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table emp add email varchar(30) after dno;
+Query OK, 0 rows affected (0.11 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++----------+-----------+--------+--------+------+-------+
+| fname    | ssn       | salary | gender | dno  | email |
++----------+-----------+--------+--------+------+-------+
+| jhon     | 123456789 |  30000 | NULL   | NULL | NULL  |
+| franklin | 333445555 |  40000 | NULL   | NULL | NULL  |
+| joyce    | 453453453 |  25000 | NULL   | NULL | NULL  |
+| ramesh   | 666884444 |  38000 | NULL   | NULL | NULL  |
+| james    | 888665555 |  55000 | NULL   | NULL | NULL  |
+| jennifer | 987654321 |  43000 | NULL   | NULL | NULL  |
+| ahmad    | 987987987 |  25000 | NULL   | NULL | NULL  |
+| alicia   | 999887777 |  25000 | NULL   | NULL | NULL  |
++----------+-----------+--------+--------+------+-------+
+8 rows in set (0.00 sec)
+
+mysql> alter table emp drop email;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++----------+-----------+--------+--------+------+
+| fname    | ssn       | salary | gender | dno  |
++----------+-----------+--------+--------+------+
+| jhon     | 123456789 |  30000 | NULL   | NULL |
+| franklin | 333445555 |  40000 | NULL   | NULL |
+| joyce    | 453453453 |  25000 | NULL   | NULL |
+| ramesh   | 666884444 |  38000 | NULL   | NULL |
+| james    | 888665555 |  55000 | NULL   | NULL |
+| jennifer | 987654321 |  43000 | NULL   | NULL |
+| ahmad    | 987987987 |  25000 | NULL   | NULL |
+| alicia   | 999887777 |  25000 | NULL   | NULL |
++----------+-----------+--------+--------+------+
+8 rows in set (0.00 sec)
+
+mysql> alter table emp modify gender char(1);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from emp;
++----------+-----------+--------+--------+------+
+| fname    | ssn       | salary | gender | dno  |
++----------+-----------+--------+--------+------+
+| jhon     | 123456789 |  30000 | NULL   | NULL |
+| franklin | 333445555 |  40000 | NULL   | NULL |
+| joyce    | 453453453 |  25000 | NULL   | NULL |
+| ramesh   | 666884444 |  38000 | NULL   | NULL |
+| james    | 888665555 |  55000 | NULL   | NULL |
+| jennifer | 987654321 |  43000 | NULL   | NULL |
+| ahmad    | 987987987 |  25000 | NULL   | NULL |
+| alicia   | 999887777 |  25000 | NULL   | NULL |
++----------+-----------+--------+--------+------+
+8 rows in set (0.00 sec)
+
+mysql> alter table emp add constraint chk1 check (gender in ('m','f'));
+Query OK, 8 rows affected (0.09 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> update emp set gender = "l" where ssn = 123456789;
+ERROR 3819 (HY000): Check constraint 'chk1' is violated.
+
+ 
+

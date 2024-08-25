@@ -1,0 +1,54 @@
+1>>>INNER JOIN :
+The INNER JOIN keyword selects all rows from both the tables as long as the condition is satisfied.
+example : let table 1 has 8 rows and table 2 has 8 rows as well , but only 5 rows satisfying match making condition , the result 	will be on the inner join is  :-
+	table 1:  table 2:
+	mr1	 mr1
+	mr2	 mr2
+	mr3	 mr3
+	mr4	 mr4
+	mr5	 mr5
+
+2>>>LEFT JOIN : 
+it will give all the row elements on the left table , also returns the rows satisfying the match making condition and gives NULL as the right side in which there is a value in the left side but no element satisfying the match making in the right table;
+example : let table 1 has 8 rows and table 2 has 8 rows as well , but only 5 rows satisfying match making condition , the result 	will be on the left join is  :-
+	table 1:  table 2:
+	mr1	 mr1
+	mr2	 mr2
+	mr3	 mr3
+	mr4	 mr4
+	mr5	 mr5
+	row6	 null
+	row7	 null
+	row8	 null
+
+3>>>RIGHT JOIN : 
+it will give all the rows in right side of the table , also returns the rows satisfying the match making condition and gives NULL as the left side in which there is a value in the right side but no element satisfying the match making in the left table;
+example : let table 1 has 8 rows and table 2 has 8 rows as well , but only 5 rows satisfying match making condition , the result 	will be on the right join is  :-
+	table 1:  table 2:
+	mr1	 mr1
+	mr2	 mr2
+	mr3	 mr3
+	mr4	 mr4
+	mr5	 mr5
+	NULL	 row6
+	NULL	 row7
+	NULL	 row8
+
+4>>>FULL JOIN :
+combination of left join and right join .
+example : let table 1 has 8 rows and table 2 has 8 rows as well , but only 5 rows satisfying match making condition , the result 	will be on the full join is  :-
+	table 1:  table 2:
+	mr1	 mr1
+	mr2	 mr2
+	mr3	 mr3
+	mr4	 mr4
+	mr5	 mr5
+	row6	 null
+	row7	 null
+	row8	 null
+	NULL	 row6
+	NULL	 row7
+	NULL	 row8
+
+5>>>NATURAL JOIN : 
+Natural join can join tables based on the common columns in the tables being joined. A natural join returns all rows by matching values in common columns having same name and data type of columns and that column should be present in both tables.
